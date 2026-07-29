@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOL AHORA - Complejo Deportivo</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+</head>
+<body>
+    <header class="header-top" id="menu-pegajoso">
+        <div class="logo-container">
+            <img src="logo.png" alt="Logo Gol Ahora" class="main-logo">
+        </div>
+        <nav class="nav-links">
+            <a href="#reservas">Reservar</a>
+            <a href="#servicios">Servicios</a>
+            <a href="#competencias">Torneos</a>
+            <a href="#galeria">Canchas</a>
+            <a href="#quienes-somos">Nosotros</a>
+            <a href="#ubicacion">Ubicación</a>
+            <a href="#contacto">Contacto</a>
+        </nav>
+        <div class="nav-buttons" id="contenedor-botones-nav">
+            <div id="nav-modo-publico" style="display: flex; gap: 15px;">
+                <button class="btn-nav outline" id="btn-registrar">REGISTRARSE</button>
+                <button class="btn-nav outline" id="btn-ingresar">INGRESAR</button>
+            </div>
+            
+            <div id="nav-modo-cliente" style="display: none; align-items: center; gap: 15px; position: relative;">
+    <span style="color: white; font-size: 0.9rem; font-weight: bold; letter-spacing: 0.5px;">
+        Hola, <span id="nav-nombre-cliente" style="color: var(--color-primario); text-transform: uppercase;">Jugador</span>
+    </span>
+    
+    <div style="position: relative; display: inline-block;">
+        <button class="btn-nav" id="btn-mi-menu" style="background: #bc13fe; color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 8px;" onclick="toggleMiMenu(event)">
+            MI MENÚ ▾
+        </button>
+        
+        <div id="dropdown-mi-menu" style="display: none; position: absolute; right: 0; top: 120%; background: #121212; min-width: 200px; border: 1px solid rgba(188, 19, 254, 0.4); border-radius: 8px; box-shadow: 0 8px 30px rgba(0,0,0,0.7); z-index: 9999; overflow: hidden;">
+            
+            <a href="#reservas" style="display: flex; align-items: center; gap: 10px; color: white; padding: 14px 16px; text-decoration: none; font-size: 0.9rem; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s;" 
+               onmouseover="this.style.background='rgba(188,19,254,0.15)'" onmouseout="this.style.background='transparent'" 
+               onclick="cerrarMiMenu(); abrirMisReservas();">
+                 MIS RESERVAS
+            </a>
+            
+            <a href="#servicios" style="display: flex; align-items: center; gap: 10px; color: white; padding: 14px 16px; text-decoration: none; font-size: 0.9rem; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s;" 
+               onmouseover="this.style.background='rgba(188,19,254,0.15)'" onmouseout="this.style.background='transparent'" 
+               onclick="cerrarMiMenu(); abrirMisClases();">
+                 MIS CLASES
+            </a>
+            
+            <a href="#competencias" style="display: flex; align-items: center; gap: 10px; color: white; padding: 14px 16px; text-decoration: none; font-size: 0.9rem; font-weight: bold; transition: background 0.2s;" 
+               onmouseover="this.style.background='rgba(188,19,254,0.15)'" onmouseout="this.style.background='transparent'" 
+               onclick="cerrarMiMenu(); alert('¡Módulo de Competencias próximamente!\nTu usuario está registrado en la lista de espera global de ligas.');">
+                 MIS COMPETENCIAS
+            </a>
+            
+        </div>
+    </div>
+    
+    <button id="btn-logout-cliente" class="btn-nav btn-filled-red">SALIR</button>
+</div>
+        </div>
+    </header>
+
+    <main class="main-content" id="sitio-publico">
+
+        <section class="hero-section">
+            <div class="slider-wrapper">
+                <div class="slide active" style="background-image: url('fondo1.png')"></div>
+                <div class="slide" style="background-image: url('campeon.jpg')"></div>
+                <div class="slide" style="background-image: url('campeon2.jpg')"></div>
+                <div class="slide" style="background-image: url('canchas2.jpg')"></div>
+                <div class="slide" style="background-image: url('entrenamiento-futobol-ejercicios.jpg')"></div>
+            </div>
+
+            <div class="slider-overlay"></div>
+
+            <button class="slider-arrow left" id="slider-prev">❮</button>
+            <button class="slider-arrow right" id="slider-next">❯</button>
+
+            <div class="slider-dots">
+                <span class="dot active" data-index="0"></span>
+                <span class="dot" data-index="1"></span>
+                <span class="dot" data-index="2"></span>
+                <span class="dot" data-index="3"></span>
+                <span class="dot" data-index="4"></span>
+            </div>
+
+            <div class="hero-text">
+                <h1 class="main-title">COMPLEJO DEPORTIVO <br> <span>GOL AHORA</span></h1>
+                <p class="subtitle">El fútbol es pasión y sentimiento</p>
+
+                <button class="btn-cta-hero" id="btn-cta-reserva">
+                    <span>RESERVA AHORA!</span>
+                    <svg class="arrow-down" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 66 43">
+                    <polygon points="39.58,4.46 44.11,0 66,21.5 44.11,43 39.58,38.54 56.94,21.5"></polygon>
+                    <polygon points="19.79,4.46 24.32,0 46.21,21.5 24.32,43 19.79,38.54 37.15,21.5"></polygon>
+                    <polygon points="0,4.46 4.53,0 26.42,21.5 4.53,43 0,38.54 17.36,21.5"></polygon>
+                    </svg>
+                </button>
+            </div>
+        </section>
+        
+        <div class="sponsors-band">
+            <div class="sponsors-track">
+                <span>Entrenamiento</span>
+                <span>FÚTBOL 5</span>
+                <span>FÚTBOL 7</span>
+                <span>FÚTBOL 11</span>
+                <span>TORNEOS</span>
+                <span>CLASES</span>
+                <span>ENTRENAMIENTOS</span>
+                <span>FÚTBOL 5</span>
+                <span>FÚTBOL 7</span>
+                <span>FÚTBOL 11</span>
+                <span>TORNEOS</span>
+                <span>CLASES</span>
+                <span>ENTRENAMIENTOS</span>
+            </div>
+        </div>
+        
+        <section id="reservas-cta" class="glass-panel section-panel" style="text-align: center; border-color: rgba(57, 255, 20, 0.3);">
+            <h2 style="border: none; margin-bottom: 10px;">¿LISTO PARA ENTRAR A LA CANCHA?</h2>
+            <p style="color: #ccc; margin-bottom: 20px; font-size: 1.1rem;">No te quedes sin tu turno. Reservá de forma rápida, fácil y 100% online.</p>
+            
+            <button class="btn-cta-hero" id="btn-cta-reserva-footer" style="margin-top: 10px;">
+                <span>RESERVA AHORA!</span>
+                <svg class="arrow-down" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 66 43">
+                    <polygon points="39.58,4.46 44.11,0 66,21.5 44.11,43 39.58,38.54 56.94,21.5"></polygon>
+                    <polygon points="19.79,4.46 24.32,0 46.21,21.5 24.32,43 19.79,38.54 37.15,21.5"></polygon>
+                    <polygon points="0,4.46 4.53,0 26.42,21.5 4.53,43 0,38.54 17.36,21.5"></polygon>
+                </svg>
+            </button>
+        </section>
+
+        <section id="servicios" class="glass-panel section-panel">
+    <h2>CLASES Y ENTRENAMIENTOS</h2>
+    <div class="cards-grid">
+        <div class="info-card">
+            <h3>Clases Particulares</h3>
+            <p>Mejorá tu técnica individual, definición y control de balón con profesores de primer nivel. Adaptado a todas las edades.</p>
+            <button class="btn-sm" id="btn-landing-clases">Reservar Turno</button> 
+        </div>
+        <div class="info-card">
+            <h3>Entrenamientos Funcionales</h3>
+            <p>Preparación física específica para futbolistas. ¡Ponete a punto para rendir al máximo en tus partidos!</p>
+            <button class="btn-sm" id="btn-landing-horarios">Ver Horarios</button>
+        </div>
+    </div>
+</section>
+
+<section id="competencias" class="glass-panel section-panel">
+    <h2>COMPETENCIAS</h2>
+    <div class="cards-grid">
+        <div class="info-card">
+            <h3> Liga Clausura 2026</h3>
+            <p>Inscripciones abiertas para categorías Libres y +30. Partidos los fines de semana con árbitros oficiales.</p>
+            <button class="btn-sm highlight" id="btn-landing-torneos">Inscribir Equipo</button>
+        </div>
+        <div class="info-card">
+            <h3> Torneos Relámpago</h3>
+            <p>¿No tienen tiempo para una liga larga? Anotate con tu equipo en nuestros desafíos de un solo día. ¡Copas, indumentaria y premios para los campeones!</p>
+            <button class="btn-sm" id="btn-landing-relampago">Ver Próximos</button>
+        </div>
+        </div>
+</section>
+
+        <section id="galeria" class="glass-panel section-panel">
+            <h2>NUESTRAS CANCHAS</h2>
+            <div class="gallery-container">
+                <div class="gallery-item"><img src="canchas1.jpg" alt="Instalaciones Fútbol 5 y 7"></div>
+                <div class="gallery-item"><img src="canchas2.jpg" alt="Vista aérea nocturna"></div>
+            </div>
+        </section>
+
+        <section id="quienes-somos" class="glass-panel section-panel">
+            <h2>¿QUIÉNES SOMOS?</h2>
+            <div class="about-text">
+                <p>Somos un equipo de apasionados por el fútbol que nació con un objetivo claro: ofrecer a los jugadores un espacio premium donde vivir el deporte con la máxima calidad y seguridad.</p>
+                <p>En <strong>Gol Ahora</strong> combinamos infraestructura de césped sintético profesional de última generación, iluminación LED de nivel estadio y una gestión ágil para que vos solo te preocupes por tirar la magia en la cancha.</p>
+            </div>
+        </section>
+
+        <section id="ubicacion" class="glass-panel section-panel">
+            <h2>UBICACIÓN DEL COMPLEJO</h2>
+            <p class="location-text"> Av. Juan B. Justo 9200 - CP 1408 - CABA, Argentina</p>
+            <div class="map-container">
+                <iframe 
+                    src="https://maps.google.com/maps?q=Av.%20Juan%20B.%20Justo%209200%2C%20CP%201408%2C%20CABA%2C%20Argentina&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+                    width="100%" 
+                    height="300" 
+                    style="border:0; border-radius: 12px;" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+        </section>
+
+        <section id="contacto" class="glass-panel">
+            <h2>CONTACTANOS</h2>
+            <div class="contact-simple">
+                <p>Nuestro sistema de reservas es 100% automático.</p>
+                <p class="contact-subtext">¿Tuviste algún inconveniente con tu turno o necesitás soporte? No dudes en comunicarte al 1143445552</p>
+                <a href="https://wa.me/5491143445552" target="_blank" class="btn-whatsapp">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="wp-icon">
+                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.457L0 24zm6.59-4.846c1.66.986 3.288 1.48 4.888 1.481 5.421 0 9.832-4.326 9.836-9.641.002-2.575-1.002-5-2.827-6.83-1.825-1.83-4.254-2.836-6.836-2.837-5.43 0-9.84 4.331-9.843 9.643-.001 1.672.454 3.301 1.32 4.747l-.991 3.616 3.753-.962zM17.43 14.86c-.307-.154-1.817-.893-2.098-.995-.281-.102-.485-.154-.688.154-.203.308-.785.995-.96 1.199-.177.205-.353.23-.66.077-.307-.155-1.298-.478-2.472-1.522-.913-.811-1.53-1.812-1.71-2.119-.18-.306-.018-.471.135-.624.139-.138.307-.359.462-.538.154-.179.206-.307.307-.512.103-.205.051-.384-.025-.538-.077-.154-.688-1.663-.943-2.278-.248-.598-.501-.517-.688-.527-.178-.008-.383-.01-.587-.01s-.537.077-.817.384c-.281.308-1.073 1.05-1.073 2.56 0 1.51 1.1 2.969 1.253 3.174.154.204 2.165 3.303 5.244 4.631.733.316 1.304.505 1.75.647.736.233 1.407.2 1.937.12.59-.089 1.817-.742 2.072-1.429.254-.688.254-1.278.177-1.393-.075-.12-.28-.19-.588-.344z"/>
+                    </svg>
+                    WhatsApp
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <div id="panel-control" class="dashboard-layout" style="display: none;">   
+        <div class="admin-logo-container">
+            <img src="logo.png" alt="Logo Gol Ahora" class="admin-logo">
+        </div>     
+        <aside class="dashboard-sidebar glass-panel">
+            <div class="sidebar-user">
+                <div class="avatar-mock">A</div>
+                <div class="user-info">
+                    <h3 id="rol-titulo">ADMINISTRADOR</h3>
+                    <p id="nombre-admin-sidebar" style="margin: 4px 0; color: #ddd; font-size: 0.95rem; font-weight: bold;"></p>
+                    <span class="status-online">En línea</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <button class="tab-btn active" data-tab="usuarios">Gestión de Usuarios</button>
+                <button class="tab-btn" data-tab="canchas">Gestión de Canchas</button>
+                <button class="tab-btn" data-tab="reservas">Reservas y Turnos</button>
+                <button class="tab-btn" data-tab="finanzas">Pagos y Recibos</button>
+                <button class="tab-btn" data-tab="torneos">Ligas y Torneos</button>
+                <button class="tab-btn" data-tab="clases">Clases y Entren.</button>
+                <button class="tab-btn" data-tab="reportes">Reportes</button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button id="btn-cerrar-sesion" class="btn-logout">
+                    <span>Cerrar Sesión</span> 
+                </button>
+            </div>
+        </aside>
+
+        <main class="dashboard-content glass-panel">
+            <header class="content-header">
+                <h2 id="titulo-seccion">Gestión de Usuarios</h2>
+                <div id="header-acciones" class="header-actions">
+                    </div>
+            </header>
+
+            <div id="dashboard-acciones" class="content-body scroll-personalizado">
+                </div>
+        </main>
+    </div>
+
+    <dialog id="modal-login" class="modal-box">
+        <button id="btn-close-modal" class="btn-close-x">×</button>
+        <h2>INICIAR SESIÓN</h2>
+        <form id="form-login-sistema">
+            <div class="input-group">
+                <label>USUARIO</label>
+                <input type="text" id="input-usuario" placeholder="Ej: admin o profe" required>
+            </div>
+            <div class="input-group">
+                <label>CONTRASEÑA</label>
+                <input type="password" id="input-password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-reserve" style="margin-top: 15px;">Iniciar Sesion</button>
+            <p id="mensaje-error" class="error-login-text"></p>
+            <div class="login-divider">
+                <span>¿Primera vez?</span>
+            </div>
+            <button type="button" id="btn-ir-a-registro" class="btn-reserve outline-green" style="width: 100%;">REGISTRARSE</button>
+        </form>
+    </dialog>
+
+    <dialog id="modal-registrar" class="modal-box modal-registro-box">
+        <button id="btn-close-registrar" class="btn-close-x">×</button>
+        <h2>CREAR CUENTA</h2>
+        <form id="form-registro-sistema">
+            <div class="form-grid">
+                <div class="input-group">
+                    <label>DNI</label>
+                    <input type="number" id="reg-dni" placeholder="Ej: 45000000" required>
+                </div>
+                <div class="input-group">
+                    <label>TELÉFONO</label>
+                    <input type="number" id="reg-telefono" placeholder="Ej: 1123456789" required>
+                </div>
+                <div class="input-group">
+                    <label>NOMBRE</label>
+                    <input type="text" id="reg-nombre" placeholder="Tu nombre" required>
+                </div>
+                <div class="input-group">
+                    <label>APELLIDO</label>
+                    <input type="text" id="reg-apellido" placeholder="Tu apellido" required>
+                </div>
+                
+                <div class="input-group full-width">
+                    <span class="form-separator">Dirección de Residencia</span>
+                </div>
+                
+                <div class="input-group">
+                    <label>CALLE</label>
+                    <input type="text" id="reg-calle" placeholder="Ej: Av. Belgrano" required>
+                </div>
+                <div class="input-group">
+                    <label>NÚMERO</label>
+                    <input type="number" id="reg-numero" placeholder="Ej: 1234" required>
+                </div>
+                <div class="input-group">
+                    <label>LOCALIDAD</label>
+                    <input type="text" id="reg-localidad" placeholder="Ej: Berazategui" required>
+                </div>
+                <div class="input-group">
+                    <label>BARRIO</label>
+                    <input type="text" id="reg-barrio" placeholder="Ej: Centro" required>
+                </div>
+                <div class="input-group full-width">
+                    <label>CÓDIGO POSTAL</label>
+                    <input type="number" id="reg-cp" placeholder="Ej: 1884" required>
+                </div>
+                
+                <div class="input-group full-width">
+                    <span class="form-separator">Datos de Acceso</span>
+                </div>
+                
+                <div class="input-group full-width">
+                    <label>EMAIL</label>
+                    <input type="email" id="reg-mail" placeholder="ejemplo@correo.com" required>
+                </div>
+                <div class="input-group full-width">
+                    <label>CONTRASEÑA</label>
+                    <input type="password" id="reg-password" placeholder="••••••••" required>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn-reserve" style="margin-top: 20px;">REGISTRARSE</button>
+            <p id="mensaje-error-registro" class="error-login-text"></p>
+        </form>
+    </dialog>
+
+    <dialog id="modal-editar-usuario" class="glass-panel modal-centrado">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">
+            <h3 style="margin: 0; color: white;">Editar Usuario</h3>
+            <button onclick="document.getElementById('modal-editar-usuario').close()" style="background: transparent; border: none; color: #ff3838; font-size: 1.2rem; cursor: pointer;">✖</button>
+        </div>
+        
+        <form id="form-editar-usuario">
+            <input type="hidden" id="edit-dni-original">
+            <input type="hidden" id="edit-direccion-id">
+
+            <div class="form-grid-3-cols">
+                <div class="input-group">
+                    <label>Nombre</label>
+                    <input type="text" id="edit-nombre" required class="input-saas">
+                </div>
+                <div class="input-group">
+                    <label>Apellido</label>
+                    <input type="text" id="edit-apellido" required class="input-saas">
+                </div>
+                <div class="input-group">
+                    <label>DNI (No modificable)</label>
+                    <input type="number" id="edit-dni" disabled title="El DNI no se puede modificar" class="input-saas" style="opacity: 0.5; cursor: not-allowed; background: rgba(0,0,0,0.8);">
+                </div>
+
+                <div class="input-group" style="grid-column: span 2;">
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="edit-mail" required class="input-saas">
+                </div>
+                <div class="input-group">
+                    <label>Teléfono</label>
+                    <input type="number" id="edit-telefono" class="input-saas">
+                </div>
+            </div>
+
+            <h4 style="color: var(--color-primario); margin: 25px 0 15px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Datos de Dirección</h4>
+            
+            <div class="form-grid-3-cols">
+                <div class="input-group" style="grid-column: span 2;">
+                    <label>Calle</label>
+                    <input type="text" id="edit-calle" required class="input-saas">
+                </div>
+                <div class="input-group">
+                    <label>Número</label>
+                    <input type="number" id="edit-numero" required class="input-saas">
+                </div>
+
+                <div class="input-group">
+                    <label>Localidad</label>
+                    <input type="text" id="edit-localidad" required class="input-saas">
+                </div>
+                <div class="input-group">
+                    <label>Barrio</label>
+                    <input type="text" id="edit-barrio" required class="input-saas">
+                </div>
+                <div class="input-group">
+                    <label>Código Postal</label>
+                    <input type="text" id="edit-cp" required class="input-saas">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-reserve btn-add" style="margin-top: 25px; width: 100%; padding: 12px; font-size: 1rem;">GUARDAR CAMBIOS</button>
+        </form>
+    </dialog>
+
+    <dialog id="modal-ascenso-instructor" class="glass-panel modal-centrado" style="max-width: 600px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">
+            <h3 style="margin: 0; color: #ff9800;">Ascender a Instructor</h3>
+            <button onclick="document.getElementById('modal-ascenso-instructor').close()" style="background: transparent; border: none; color: #ff3838; font-size: 1.2rem; cursor: pointer;">✖</button>
+        </div>
+        
+        <form id="form-ascenso-instructor">
+            <div class="input-group" style="margin-bottom: 25px; background: rgba(255,152,0,0.05); padding: 15px; border-radius: 8px; border: 1px dashed rgba(255,152,0,0.3);">
+                <label style="color: #ff9800; font-weight: bold; font-size: 0.85rem; margin-bottom: 8px; display: block;">DNI DEL USUARIO A ASCENDER</label>
+                
+                <div style="display: flex; gap: 10px;">
+                    <input type="number" id="ascenso-dni" class="input-saas" placeholder="Ej: 45222333" required style="border-color: rgba(255,152,0,0.5); font-size: 1.1rem; text-align: center; font-weight: bold; color: white;">
+                    <button type="button" class="btn-sm" style="background: #ff9800; color: black; padding: 0 20px; font-size: 1rem;" onclick="verificarDniAscenso()">BUSCAR</button>
+                </div>
+                
+                <p id="info-usuario-ascenso" style="margin-top: 12px; font-size: 0.9rem; display: none; text-align: center;"></p>
+            </div>
+            
+            <h4 style="color: var(--color-primario); margin-bottom: 15px; font-size: 0.9rem; text-transform: uppercase;">1. Certificado Habilitante</h4>
+            
+            <input type="hidden" id="inst-id-certificado">
+            
+            <div id="seccion-btn-certificado" style="text-align: center; margin-bottom: 25px;">
+                <button type="button" class="btn-sm outline-green" onclick="document.getElementById('modal-crear-certificado').showModal()">+ AGREGAR CERTIFICADO</button>
+            </div>
+            
+            <div id="seccion-certificado-ok" style="display: none; background: rgba(57, 255, 20, 0.1); border: 1px solid var(--color-primario); padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 25px;">
+                <span style="color: var(--color-primario); font-weight: bold;">Certificado generado y vinculado</span>
+            </div>
+
+            <div id="seccion-datos-instructor" style="opacity: 0.3; pointer-events: none; transition: all 0.3s ease;">
+                <h4 style="color: var(--color-primario); margin-bottom: 15px; font-size: 0.9rem; text-transform: uppercase;">2. Perfil del Instructor</h4>
+                <div class="form-grid-saas">
+                    <div class="input-group" style="grid-column: span 2;">
+                        <label>Especialidad</label>
+                        <input type="text" id="inst-especialidad" class="input-saas" placeholder="Ej: Alto Rendimiento" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Antigüedad (Años)</label>
+                        <input type="number" id="inst-antiguedad" class="input-saas" value="0" min="0" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Tipo de Rol</label>
+                        <select id="inst-tipo" class="select-saas" required style="width: 100%;">
+                            <option value="" disabled selected>-- Elegir --</option>
+                            <option value="Profesor">Profesor</option>
+                            <option value="Entrenador">Entrenador</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" id="btn-submit-ascenso" class="btn-reserve btn-add" disabled style="margin-top: 25px; width: 100%; padding: 12px; font-size: 1rem; background: #ff9800; color: black;">
+                    CONFIRMAR ASCENSO
+                </button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="modal-crear-certificado" class="glass-panel modal-centrado" style="max-width: 450px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h4 style="color: white; margin:0;">Nuevo Certificado</h4>
+            <button type="button" onclick="document.getElementById('modal-crear-certificado').close()" style="background: transparent; border: none; color: #ff3838; cursor: pointer; font-size: 1.2rem;">✖</button>
+        </div>
+        <form id="form-crear-certificado">
+            <div class="input-group">
+                <label>Nombre del Certificado</label>
+                <input type="text" id="cert-nombre" class="input-saas" placeholder="Ej: Profe de Natación" required>
+            </div>
+            <div class="input-group">
+                <label>Ente Emisor</label>
+                <input type="text" id="cert-ente" class="input-saas" placeholder="Ej: ASDJ" required>
+            </div>
+            <div class="input-group">
+                <label>Fecha de Emisión</label>
+                <input type="date" id="cert-fecha" class="input-saas" required>
+            </div>
+            <div class="input-group" style="display: flex; align-items: center; gap: 10px; margin-top: 20px;">
+                <input type="checkbox" id="cert-verificado" style="width: 20px; height: 20px; accent-color: var(--color-primario);" checked>
+                <label style="margin: 0; color: white;">Verificado Oficialmente</label>
+            </div>
+            <button type="submit" class="btn-reserve" style="margin-top: 20px; width: 100%;">GUARDAR Y VINCULAR</button>
+        </form>
+    </dialog>
+
+    <dialog id="modal-nueva-clase" class="glass-panel modal-centrado" style="max-width: 500px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">
+            <h3 style="margin: 0; color: #ff9800;">Crear Nueva Clase</h3>
+            <button onclick="document.getElementById('modal-nueva-clase').close()" style="background: transparent; border: none; color: #ff3838; font-size: 1.2rem; cursor: pointer;">✖</button>
+        </div>
+        
+        <form id="form-nueva-clase">
+            <div class="input-group">
+                <label>Nombre de la Actividad</label>
+                <input type="text" id="clase-nombre" class="input-saas" placeholder="Ej: Fútbol Femenino" required>
+            </div>
+            
+            <div class="form-grid-saas" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                <div class="input-group">
+                    <label>Cupo Máximo</label>
+                    <input type="number" id="clase-cupo" class="input-saas" placeholder="Ej: 20" required>
+                </div>
+                <div class="input-group">
+                    <label>DNI del Profesor</label>
+                    <input type="number" id="clase-profe" class="input-saas" placeholder="DNI exacto" required>
+                </div>
+                <div class="input-group">
+                    <label>Días</label>
+                    <input type="text" id="clase-dias" class="input-saas" placeholder="Ej: Martes y Jueves" required>
+                </div>
+                <div class="input-group">
+                    <label>Horario</label>
+                    <input type="text" id="clase-horario" class="input-saas" placeholder="Ej: 18:00 - 19:30" required>
+                </div>
+            </div>
+
+            <button type="submit" id="btnGuardarClase" class="btn-reserve btn-add" style="margin-top: 25px; width: 100%; padding: 12px; font-size: 1rem; background: #ff9800; color: black;">
+                GUARDAR CLASE
+            </button>
+        </form>
+    </dialog>
+
+    <dialog id="modal-reservas" class="glass-panel modal-centrado" style="max-width: 800px; color: white;">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">
+            <h2 style="margin: 0; border: none; padding: 0; color: white;">RESERVAR CANCHA</h2>
+            <button onclick="document.getElementById('modal-reservas').close()" style="background: transparent; border: none; color: #ff3838; font-size: 2rem; cursor: pointer; transition: transform 0.2s;">×</button>
+        </div>
+        
+        <div class="wizard-steps">
+            <div class="w-step active" id="dot-paso-1">1. Cancha</div>
+            <div class="w-step" id="dot-paso-2">2. Fecha</div>
+            <div class="w-step" id="dot-paso-3">3. Horario</div>
+        </div>
+
+        <div id="reserva-paso-1" class="reserva-step active">
+             <h3 class="reserva-title" style="color: white; text-align: center;">¿Qué querés jugar hoy?</h3>
+             <div class="cancha-options">
+                 <button class="cancha-card" onclick="seleccionarCancha('Fútbol 5')"><span class="c-icon"></span> Fútbol 5</button>
+                 <button class="cancha-card" onclick="seleccionarCancha('Fútbol 7')"><span class="c-icon"></span> Fútbol 7</button>
+                 <button class="cancha-card" onclick="seleccionarCancha('Fútbol 11')"><span class="c-icon"></span> Fútbol 11</button>
+             </div>
+        </div>
+
+        <div id="reserva-paso-2" class="reserva-step">
+            <h3 class="reserva-title" style="color: white; text-align: center;">¿Para cuándo querés la <span id="lbl-cancha-elegida" style="color:var(--color-primario);"></span>?</h3>
+            
+            <div class="date-selector-container">
+                <button class="btn-date-arrow" id="btn-prev-date">❮</button>
+                <input type="text" id="input-fecha-reserva" class="input-neon" placeholder="Seleccioná una fecha..." readonly="readonly" style="margin: 0; flex: 1;">
+                <button class="btn-date-arrow" id="btn-next-date">❯</button>
+            </div>
+            
+            <div class="step-actions">
+                <button class="btn-xs outline" onclick="cambiarPasoReserva(1)">Volver</button>
+                <button class="btn-reserve btn-add" style="width: auto; padding: 10px 30px;" onclick="buscarTurnosReales()">VER HORARIOS</button>
+            </div>
+        </div>
+
+        <div id="reserva-paso-3" class="reserva-step">
+            <h3 class="reserva-title" style="color: white; text-align: center;">Turnos para el <span id="lbl-fecha-elegida" style="color:var(--color-primario);"></span></h3>
+            <div id="grilla-turnos" class="turnos-grid"></div>
+            <div class="step-actions" style="margin-top: 25px;">
+                <button type="button" class="btn-xs outline" onclick="event.stopPropagation(); cambiarPasoReserva(2)">VOLVER A LA FECHA</button>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="modal-mis-reservas" class="glass-panel modal-centrado" style="max-width: 900px; width: 90%; max-height: 80vh; overflow-y: auto;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">
+            <h2 style="margin: 0; color: white;">MIS RESERVAS</h2>
+            <button onclick="document.getElementById('modal-mis-reservas').close()" style="background: transparent; border: none; color: #ff3838; font-size: 2rem; cursor: pointer;">×</button>
+        </div>
+        <div id="grid-mis-reservas" class="cards-grid">
+            <p style="color: white; text-align: center;">Cargando tus reservas...</p>
+        </div>
+    </dialog>
+
+    <dialog id="modal-editar-clase" class="glass-panel modal-centrado" style="max-width: 600px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 style="color: #bc13fe; margin: 0;">Gestionar Clase</h3>
+        <button onclick="document.getElementById('modal-editar-clase').close()" style="background:transparent; border:none; color:white; cursor:pointer;">✖</button>
+    </div>
+
+    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <button class="btn-neon-violeta" onclick="mostrarTab('form-editar-clase')">Datos</button>
+        <button class="btn-neon-violeta" onclick="mostrarTab('lista-alumnos')">Alumnos</button>
+    </div>
+
+    <form id="form-editar-clase" class="tab-content">
+    <input type="hidden" id="edit-id">
+    <input type="hidden" id="edit-profe"> 
+
+    <label>Nombre</label> <input type="text" id="edit-nombre" class="input-saas">
+    <label>Días</label> <input type="text" id="edit-dias" class="input-saas">
+    <label>Horario</label> <input type="text" id="edit-horario" class="input-saas">
+    <label>Cupo</label> <input type="number" id="edit-cupo" class="input-saas">
+    
+    <button type="submit" class="btn-reserve" style="background:#bc13fe; margin-top:15px; width:100%;">GUARDAR CAMBIOS</button>
+</form>
+
+    <div id="lista-alumnos" class="tab-content" style="display:none;">
+        <ul id="ul-alumnos" style="color:white; list-style:none; padding:0;"></ul>
+    </div>
+</dialog>
+
+<dialog id="modal-inscripcion" class="glass-panel modal-centrado" style="max-width: 400px; color: white;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">
+        <h3 style="margin: 0; color: #bc13fe;">Inscribir Alumno</h3>
+        <button onclick="document.getElementById('modal-inscripcion').close()" style="background: transparent; border: none; color: #ff3838; font-size: 1.2rem; cursor: pointer;">✖</button>
+    </div>
+    
+    <input type="hidden" id="inscripcion-id-clase">
+    
+    <div class="input-group" style="margin-top: 15px;">
+        <label style="display: block; margin-bottom: 8px;">DNI del Cliente</label>
+        <input type="number" id="inscripcion-dni-cliente" class="input-saas" placeholder="Ej: 33444555" style="width: 100%;">
+    </div>
+    
+    <button class="btn-reserve" style="background: #bc13fe; margin-top: 25px; width: 100%; padding: 12px; font-weight: bold; color: white; text-transform: uppercase; letter-spacing: 1px;" onclick="confirmarInscripcion()">
+        CONFIRMAR INSCRIPCIÓN
+    </button>
+</dialog>
+
+    <a href="https://wa.me/5491143445552" target="_blank" class="btn-wsp-flotante" id="btn-wsp-flotante">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.457L0 24zm6.59-4.846c1.66.986 3.288 1.48 4.888 1.481 5.421 0 9.832-4.326 9.836-9.641.002-2.575-1.002-5-2.827-6.83-1.825-1.83-4.254-2.836-6.836-2.837-5.43 0-9.84 4.331-9.843 9.643-.001 1.672.454 3.301 1.32 4.747l-.991 3.616 3.753-.962zM17.43 14.86c-.307-.154-1.817-.893-2.098-.995-.281-.102-.485-.154-.688.154-.203.308-.785.995-.96 1.199-.177.205-.353.23-.66.077-.307-.155-1.298-.478-2.472-1.522-.913-.811-1.53-1.812-1.71-2.119-.18-.306-.018-.471.135-.624.139-.138.307-.359.462-.538.154-.179.206-.307.307-.512.103-.205.051-.384-.025-.538-.077-.154-.688-1.663-.943-2.278-.248-.598-.501-.517-.688-.527-.178-.008-.383-.01-.587-.01s-.537.077-.817.384c-.281.308-1.073 1.05-1.073 2.56 0 1.51 1.1 2.969 1.253 3.174.154.204 2.165 3.303 5.244 4.631.733.316 1.304.505 1.75.647.736.233 1.407.2 1.937.12.59-.089 1.817-.742 2.072-1.429.254-.688.254-1.278.177-1.393-.075-.12-.28-.19-.588-.344z"/>
+        </svg>
+    </a>
+
+    <script src="js/globales.js"></script> 
+    <script src="js/ui.js"></script>       
+    <script src="js/reservas.js"></script> 
+    <script src="js/auth.js"></script>     
+    <script src="js/clases.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/reportes.js"></script>
+    <script src="js/landing.js"></script>
+</body>
+</html>

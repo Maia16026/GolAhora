@@ -1,0 +1,114 @@
+/* --- ESTILOS GENERALES Y CONFIGURACIÓN --- */
+html {
+    scroll-behavior: smooth;
+}
+
+:root {
+    --color-primario: #39FF14;
+    --bg-oscuro: #0a0a0a;
+    --transicion-suave: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #0a0a0a;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Fondo original restaurado a partir del contenido debajo del hero */
+.main-content {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), 
+    url('../fondo1.png') no-repeat center center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+/* ==========================================================================
+   SCROLLBAR PERSONALIZADO PARA EL PANEL DE TARJETAS
+   ========================================================================== */
+
+/* Aseguramos que el contenedor central pueda scrollear */
+.content-body {
+    flex: 1;
+    overflow-y: auto; /* Acá le decimos que genere la barra si sobra contenido */
+    padding-right: 15px; /* Dejamos un margen para que la barra no pise las tarjetas */
+    padding-bottom: 20px;
+    /* Para Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(57, 255, 20, 0.5) rgba(0, 0, 0, 0.3);
+}
+
+/* Personalización del scroll para Chrome, Edge y Safari */
+.content-body::-webkit-scrollbar {
+    width: 8px; /* Finita y elegante */
+}
+
+.content-body::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.content-body::-webkit-scrollbar-thumb {
+    background: rgba(57, 255, 20, 0.3); /* Verde apagado */
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+
+.content-body::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primario); /* Se ilumina cuando le pasas el mouse por encima */
+}
+
+/*Tarjetas para clases */
+.card-clase {
+  /* Tu degradado Violeta Neón */
+  --background: linear-gradient(to left, #bc13fe 0%, #7e00b8 100%);
+  width: 100%;
+  min-height: 220px;
+  padding: 3px; /* Grosor del borde brillante */
+  border-radius: 1rem;
+  position: relative;
+  z-index: 1;
+  background: var(--background);
+  display: flex;
+}
+
+.card-clase::after {
+  position: absolute;
+  content: "";
+  top: 15px;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+  transform: scale(0.9);
+  filter: blur(20px); /* El efecto de resplandor */
+  background: var(--background);
+  transition: opacity .5s;
+}
+
+.card-info-clase {
+  background: #181818; /* Fondo oscuro interno */
+  color: white; /* Texto visible siempre */
+  width: 100%;
+  height: 100%;
+  border-radius: .8rem;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-clase:hover::after {
+  opacity: 0.5; /* Se atenúa un poco el resplandor al hacer hover */
+}
+

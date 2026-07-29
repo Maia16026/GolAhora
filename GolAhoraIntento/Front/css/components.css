@@ -1,0 +1,997 @@
+/* 3. Estilos de  Paneles d Vidrio */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    width: 100%;
+    max-width: 500px;
+}
+
+.section-panel {
+    max-width: 850px;
+}
+
+.glass-panel h2, dialog.modal-box h2 {
+    margin-bottom: 25px;
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+    border-bottom: 2px solid rgba(57, 255, 20, 0.3);
+    display: inline-block;
+    padding-bottom: 5px;
+    text-transform: uppercase;
+}
+
+/* Grillas */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.info-card {
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 25px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.info-card h3 {
+    margin-bottom: 12px;
+    font-size: 1.3rem;
+}
+
+.info-card p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #cccccc;
+    margin-bottom: 20px;
+}
+
+/* Inputs y Formularios */
+.input-group {
+    text-align: left;
+    margin-bottom: 18px;
+}
+
+.input-group label {
+    font-size: 0.8rem;
+    font-weight: bold;
+    display: block;
+    color: var(--color-primario);
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+/* 4. Botones */
+.btn-reserve {
+    background-color: var(--color-primario);
+    color: black;
+    border: none;
+    border-radius: 50px;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(57, 255, 20, 0.4);
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-reserve:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(57, 255, 20, 0.6);
+}
+
+.btn-sm {
+    background: var(--color-primario);
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+    align-self: flex-start;
+    text-decoration: none;
+}
+
+.btn-sm:hover {
+    transform: translateY(-2px);
+}
+
+.outline-green {
+    background: transparent;
+    border: 2px solid var(--color-primario);
+    color: var(--color-primario);
+}
+
+/* --- MODAL DE LOGIN --- */
+dialog.modal-box {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    width: 90%;
+    max-width: 400px;
+    color: white;
+    margin: auto; /* El truco de oro: centrado perfecto automático en pantalla */
+}
+
+/* Reemplazamos modal-overlay por el pseudo-elemento nativo del navegador */
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+/* Animación cuando el diálogo se abre nativamente */
+dialog[open] {
+    animation: aparecer 0.3s ease;
+}
+
+@keyframes aparecer {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.btn-close-x {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.btn-close-x:hover {
+    color: #39FF14;
+}
+
+.error-login-text {
+    color: #ff3838;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-top: 10px;
+    display: none;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid rgba(57, 255, 20, 0.3);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.dashboard-header h2 {
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.uml-list {
+    text-align: left;
+    list-style: none;
+    margin-top: 15px;
+}
+
+.uml-list li {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    border-left: 5px solid var(--color-primario);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.uml-list span {
+    font-size: 0.95rem;
+    color: #dddddd;
+}
+
+/* --- MODAL DEL FORMULARIO DE REGISTRO --- */
+.modal-registro-box {
+    max-width: 550px !important;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding-right: 25px !important;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Divide el formulario en dos columnas perfectas */
+    gap: 12px 20px; /* Separación entre campos */
+}
+
+.full-width {
+    grid-column: span 2; /* Los campos anchos (como mail o password) ocupan las dos columnas */
+}
+
+.form-separator {
+    display: block;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(57, 255, 20, 0.15);
+    padding-bottom: 4px;
+    margin-top: 10px;
+}
+
+/* Personalizamos la barrita de scroll del formulario para que mantenga la estética neón */
+.modal-registro-box::-webkit-scrollbar {
+    width: 6px;
+}
+.modal-registro-box::-webkit-scrollbar-thumb {
+    background: var(--color-primario);
+    border-radius: 10px;
+}
+.modal-registro-box::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* --- CRUD / GESTIÓN --- */
+.management-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.management-card {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: left;
+}
+
+.management-card h4 {
+    font-size: 1.2rem;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.management-card p {
+    font-size: 0.85rem;
+    color: #aaaaaa;
+    margin-bottom: 15px;
+}
+
+.crud-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.btn-xs {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+}
+
+.btn-xs:hover {
+    background: var(--color-primario);
+    color: black;
+    border-color: var(--color-primario);
+}
+
+.btn-maintenance {
+    background: rgba(255, 152, 0, 0.2);
+    border-color: rgba(255, 152, 0, 0.4);
+    color: #ff9800;
+}
+
+.btn-maintenance:hover {
+    background: #ff9800;
+    color: black;
+    border-color: #ff9800;
+}
+
+.btn-print {
+    background: rgba(0, 188, 212, 0.2);
+    border-color: rgba(0, 188, 212, 0.4);
+    color: #00bcd4;
+    margin-left: auto;
+}
+
+.btn-print:hover {
+    background: #00bcd4;
+    color: black;
+    border-color: #00bcd4;
+}
+
+/* ==========================================================================
+   FORMULARIOS DENTRO DE MODALES (GRID SAAS)
+   ========================================================================== */
+.form-grid-saas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.input-saas {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.3s;
+    box-sizing: border-box; /* Evita que el padding rompa el ancho */
+}
+
+.input-saas:focus {
+    border-color: var(--color-primario);
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.8rem;
+    color: #aaa;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+/* ==========================================================================
+   DIVISOR "¿Primera vez?" (Login a Registro)
+   ========================================================================== */
+.login-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 25px 0 15px 0;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.85rem;
+}
+
+/* Estas dos reglas crean las líneas a los costados del texto */
+.login-divider::before,
+.login-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.login-divider span {
+    padding: 0 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+
+/* ==========================================================================
+   BOTÓN CALL TO ACTION (HERO) - Adaptado de Uiverse
+   ========================================================================== */
+.btn-cta-hero {
+  --main-size: 1.3rem;
+  --color-text: #ffffff;
+  --color-background: #20ba5a;
+  --color-background-hover: #39FF14;
+  --color-outline: rgba(37, 211, 102, 0.6);
+  --color-shadow: #00000040;
+  
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  border: none;
+  border-radius: 50px; /* Redondeado para encajar con nuestro diseño */
+  padding: 0.6em 1.5em; /* Padding ajustado */
+  font-family: "Montserrat", sans-serif; /* Usamos la fuente del proyecto */
+  font-weight: 800;
+  font-size: var(--main-size);
+  color: var(--color-text);
+  background: var(--color-background);
+  box-shadow: 0 0 0.2em 0 var(--color-background);
+  transition: 1s;
+  
+  /* Centrado en la pantalla debajo del texto */
+  margin: 40px auto 0 auto; 
+}
+
+.btn-cta-hero:active {
+  transform: scale(0.95);
+}
+
+.btn-cta-hero:hover {
+  outline: 0.1em solid transparent;
+  outline-offset: 0.2em;
+  box-shadow: 0 0 1em 0 var(--color-background);
+  animation:
+    ripple 1s linear infinite,
+    colorize 1s infinite;
+  transition: 0.5s;
+}
+
+.btn-cta-hero span {
+  margin-right: 0.3em;
+  transition: 0.5s;
+}
+
+.btn-cta-hero:hover span {
+  text-shadow: 5px 5px 5px var(--color-shadow);
+}
+
+.btn-cta-hero:active span {
+  text-shadow: none;
+}
+
+.btn-cta-hero svg {
+  height: 0.8em;
+  fill: var(--color-text);
+  margin-right: -0.16em;
+  position: relative;
+  transition: 0.5s;
+}
+
+.btn-cta-hero:hover svg {
+  margin-right: 0.66em;
+  transition: 0.5s;
+  filter: drop-shadow(5px 5px 2.5px var(--color-shadow));
+}
+
+.btn-cta-hero:active svg {
+  filter: none;
+}
+
+.btn-cta-hero svg polygon:nth-child(1) {
+  transition: 0.4s;
+  transform: translateX(-60%);
+}
+
+.btn-cta-hero svg polygon:nth-child(2) {
+  transition: 0.5s;
+  transform: translateX(-30%);
+}
+
+.btn-cta-hero:hover svg polygon:nth-child(1) {
+  transform: translateX(0%);
+  animation: opacity 1s infinite 0.6s;
+}
+
+.btn-cta-hero:hover svg polygon:nth-child(2) {
+  transform: translateX(0%);
+  animation: opacity 1s infinite 0.4s;
+}
+
+.btn-cta-hero:hover svg polygon:nth-child(3) {
+  animation: opacity 1s infinite 0.2s;
+}
+
+@keyframes opacity {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes colorize {
+  0% { background: var(--color-background); }
+  50% { background: var(--color-background-hover); }
+  100% { background: var(--color-background); }
+}
+
+@keyframes ripple {
+  0% { outline: 0em solid transparent; outline-offset: -0.1em; }
+  50% { outline: 0.2em solid var(--color-outline); outline-offset: 0.2em; }
+  100% { outline: 0.4em solid transparent; outline-offset: 0.4em; }
+}
+
+/* ==========================================================================
+   SELECTOR DE FECHAS (CARROUSEL DIARIO)
+   ========================================================================== */
+.date-selector-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin: 30px auto;
+    max-width: 400px;
+}
+
+.btn-date-arrow {
+    background: rgba(57, 255, 20, 0.1);
+    border: 2px solid var(--color-primario);
+    color: white;
+    font-size: 1.2rem;
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.btn-date-arrow:hover:not(:disabled) {
+    background: var(--color-primario);
+    color: black;
+    box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+    transform: scale(1.05);
+}
+
+/* Cuando no se puede retroceder más (ej: hoy) */
+.btn-date-arrow:disabled {
+    border-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.2);
+    cursor: not-allowed;
+    background: transparent;
+}
+
+.date-display {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 12px 15px;
+    border-radius: 8px;
+    text-transform: capitalize;
+    min-width: 240px;
+    transition: border-color 0.3s;
+}
+
+/* ==========================================================================
+   REDISEÑO DEL MODAL Y CALENDARIO NEÓN
+   ========================================================================== */
+#modal-reservas h2, #modal-reservas .reserva-title {
+    color: white !important;
+}
+
+#modal-reservas .w-step { color: #666; }
+#modal-reservas .w-step.active { color: var(--color-primario); text-shadow: 0 0 10px rgba(57, 255, 20, 0.5); }
+
+/* Input brillante donde se muestra la fecha */
+.input-neon {
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid rgba(57, 255, 20, 0.3);
+    color: white;
+    font-size: 1.2rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    padding: 15px 20px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 350px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+.input-neon:hover, .input-neon:focus {
+    border-color: var(--color-primario);
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+    outline: none;
+}
+
+/* Hackeamos el Flatpickr para hacerlo oscuro y verde */
+.flatpickr-calendar {
+    background: #111 !important;
+    border: 1px solid rgba(57, 255, 20, 0.3) !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.9) !important;
+    border-radius: 12px !important;
+    font-family: 'Montserrat', sans-serif !important;
+}
+.flatpickr-months .flatpickr-month, .flatpickr-months .flatpickr-prev-month, .flatpickr-months .flatpickr-next-month {
+    color: white !important;
+    fill: white !important;
+}
+.flatpickr-weekday {
+    color: var(--color-primario) !important;
+    font-weight: bold !important;
+}
+.flatpickr-day {
+    color: #ddd !important;
+    border-radius: 8px !important;
+}
+.flatpickr-day:hover, .flatpickr-day:focus {
+    background: rgba(57, 255, 20, 0.2) !important;
+    border-color: var(--color-primario) !important;
+    color: white !important;
+}
+.flatpickr-day.selected {
+    background: var(--color-primario) !important;
+    border-color: var(--color-primario) !important;
+    color: black !important;
+    font-weight: 800 !important;
+    box-shadow: 0 0 10px rgba(57, 255, 20, 0.6) !important;
+}
+.flatpickr-day.flatpickr-disabled {
+    color: #444 !important;
+}
+
+
+/* ==========================================================================
+   FIX PARA EL CALENDARIO DESPLEGABLE EN EL MODAL
+   ========================================================================== */
+#modal-reservas {
+    overflow: visible !important; /* Permite que el calendario flote por fuera sin crear scroll */
+}
+
+/* Red de seguridad extra por si el navegador se pone terco */
+#modal-reservas::-webkit-scrollbar {
+    display: none !important; 
+}
+
+/* Fix para que Flatpickr en modo estático no rompa las flechas */
+.flatpickr-wrapper {
+    flex: 1;
+    width: 100%;
+    display: block;
+}
+
+/* ==========================================================================
+   WIZARD DE RESERVAS (PASO A PASO)
+   ========================================================================== */
+.wizard-steps {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 15px;
+}
+
+.w-step {
+    color: #555;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    transition: color 0.3s;
+}
+
+.w-step.active {
+    color: var(--color-primario);
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
+}
+
+.reserva-step {
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+
+.reserva-step.active {
+    display: block;
+}
+
+.reserva-title {
+    font-size: 1.3rem;
+    margin-bottom: 25px;
+    text-transform: none; /* Más amigable de leer */
+}
+
+/* Paso 1: Tarjetas de Cancha */
+.cancha-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+}
+
+.cancha-card {
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 30px 15px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+
+
+.cancha-card:hover {
+    border-color: var(--color-primario);
+    background: rgba(57, 255, 20, 0.1);
+    transform: translateY(-5px);
+}
+
+/* Paso 3: Grilla de Turnos */
+.turnos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+}
+
+.turno-btn {
+    padding: 15px 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-align: center;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.turno-btn.libre {
+    background: rgba(57, 255, 20, 0.1);
+    border-color: var(--color-primario);
+    color: white;
+    cursor: pointer;
+}
+
+.turno-btn.libre:hover {
+    background: var(--color-primario);
+    color: black;
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+}
+
+.turno-btn.ocupado {
+    background: rgba(0, 0, 0, 0.6);
+    border-color: rgba(255, 255, 255, 0.05);
+    color: #555;
+    cursor: not-allowed;
+    text-decoration: line-through;
+}
+
+.turno-btn small {
+    display: block;
+    font-size: 0.75rem;
+    margin-top: 5px;
+    font-weight: normal;
+    text-decoration: none !important;
+}
+
+.step-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+/* ==========================================================================
+   RESPONSIVE: COMPONENTES, MODALES Y TARJETAS
+   ========================================================================== */
+@media (max-width: 768px) {
+    /* Los formularios de 2 columnas pasan a 1 sola columna */
+    .form-grid, .form-grid-saas {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Le sacamos el comportamiento de "ocupar doble espacio" a los inputs anchos */
+    .full-width, .input-group[style*="grid-column"] {
+        grid-column: span 1 !important;
+    }
+
+    /* Los modales aprovechan más el ancho de la pantallita */
+    .glass-panel, dialog.modal-box {
+        padding: 25px 20px;
+        width: 95%;
+    }
+
+    /* Los botones de las tarjetas (Editar, Eliminar) se apilan y ocupan el 100% */
+    .card-actions {
+        flex-direction: column;
+    }
+    
+    .card-actions .btn-xs {
+        width: 100%;
+        padding: 12px 0; /* Más altos para poder tocarlos bien con el dedo */
+    }
+}
+
+/* --- BOTÓN REFRESH ANIMADO (SOLO ÍCONO) --- */
+.btn-refresh {
+    background-color: #33c416;
+    border-radius: 0.5rem;
+    width: 38px;  /* Tamaño fijo para que sea cuadrado perfecto */
+    height: 38px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center; /* Ícono al medio absoluto */
+    border: none;
+    transition: all 0.3s ease;
+    padding: 0; 
+}
+
+.btn-refresh:hover {
+    background-color: #39FF14;
+}
+
+.btn-refresh svg {
+    width: 1.2rem;
+    height: 1.2rem;
+    color: black; /* Reload en negro */
+}
+
+.btn-refresh svg.spin-anim {
+    animation: spin_357 0.5s linear;
+}
+
+@keyframes spin_357 {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+
+/* --- BOTONES DE FILTRADO DE ESTADOS --- */
+.btn-filtro-estado {
+    background: transparent;
+    border: none;
+    color: #888;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+}
+
+.btn-filtro-estado:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.btn-filtro-estado.active {
+    background: rgba(255, 255, 255, 0.08);
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+
+/* --- BOTONES NAV CLIENTE (RELLENOS Y ELEGANTES - ALTA ESPECIFICIDAD) --- */
+
+#nav-modo-cliente .btn-filled-green {
+    background-color: #2db813; 
+    color: white; /* Ahora gana limpiamente sin !important */
+    border: 1px solid #2db813;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+#nav-modo-cliente .btn-filled-green:hover {
+    background-color: #228c0e;
+    border-color: #228c0e;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(45, 184, 19, 0.4);
+}
+
+#nav-modo-cliente .btn-filled-red {
+    background-color: #e63946; 
+    color: white;
+    border: 1px solid #e63946;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+#nav-modo-cliente .btn-filled-red:hover {
+    background-color: #bd2a36;
+    border-color: #bd2a36;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(230, 57, 70, 0.4);
+}
+
+/* --- BOTÓN DE CANCELACIÓN CLIENTE (Efecto Iluminado) --- */
+.btn-cancel-red {
+    background: transparent;
+    color: #ff3838;
+    border: 1px solid rgba(255, 56, 56, 0.4);
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    margin-top: 5px;
+}
+
+.btn-cancel-red:hover {
+    background: #e63946; /* Se rellena de rojo carmesí */
+    color: white;
+    border-color: #e63946;
+    box-shadow: 0 4px 12px rgba(230, 57, 70, 0.4); /* Brillo */
+}
+
+/* --- SCROLL PARA MIS RESERVAS --- */
+.scroll-reservas-cliente {
+    max-height: 65vh; /* Ocupa hasta el 65% de la pantalla vertical */
+    overflow-y: auto;
+    padding-right: 15px; /* Espacio para que la barra no tape el contenido */
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* Espacio entre los grupos de fechas */
+}
+
+.scroll-reservas-cliente::-webkit-scrollbar {
+    width: 6px;
+}
+
+.scroll-reservas-cliente::-webkit-scrollbar-thumb {
+    background: var(--color-primario);
+    border-radius: 10px;
+}
+
+.scroll-reservas-cliente::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+/* --- ESTILOS PARA EL PASO DE PAGO Y SELECCIÓN DE HORA --- */
+.btn-turno.seleccionado {
+    background: var(--color-primario) !important;
+    color: black !important;
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.5) !important;
+    transform: scale(1.05);
+}
+
+.panel-pago-qr {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px dashed #00bcd4;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.timer-urgencia {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #ff3838;
+    text-shadow: 0 0 10px rgba(255, 56, 56, 0.4);
+    font-family: monospace;
+}

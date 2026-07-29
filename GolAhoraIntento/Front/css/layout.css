@@ -1,0 +1,738 @@
+/* 1. Header y Navegación */
+.header-top {
+    display: grid;
+    /* Columna 1: Logo | Columna 2: Enlaces centrados | Columna 3: Botones */
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 20px; /* Barrera de seguridad para que nunca se choquen */
+    padding: 20px 50px;
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: all 0.4s ease; 
+    background: linear-gradient(to bottom, rgba(0,0,0,0.95), transparent);
+}
+
+.header-top.scrolled {
+    top: 0; 
+    background: rgba(10, 10, 10, 0.98); 
+    padding: 10px 50px; 
+    box-shadow: 0 5px 20px rgba(0,0,0,0.6); 
+}
+
+/* El logo ya no flota, ahora es un bloque sólido de la grilla */
+.logo-container {
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    transition: opacity 0.3s ease, visibility 0.3s ease; 
+}
+
+.main-logo {
+    height: 100px; 
+    width: auto;
+    filter: drop-shadow(0px 6px 12px rgba(0, 0, 0, 0.8));
+    transition: transform 0.3s ease;
+}
+
+.header-top.scrolled .logo-container {
+    opacity: 0;            
+    visibility: hidden;    
+}
+
+.header-top.scrolled .main-logo {
+    height: 0; 
+    margin: 0;
+}
+
+.nav-links {
+    grid-column: 2; 
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.05rem; 
+    letter-spacing: 1px; 
+    text-transform: uppercase;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--color-primario) ;
+}
+
+.nav-buttons .btn-nav {
+    background: none;
+    border: none;
+    color: white;
+    margin-left: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    padding: 10px 20px;
+}
+
+.nav-buttons {
+    grid-column: 3; 
+    display: flex;
+    justify-content: flex-end; 
+    gap: 15px; /* Separación entre los dos botones */
+    flex-wrap: nowrap; /* <-- Fuerza a los botones a quedarse en la misma línea */
+}
+
+/*botón ingresar*/
+.outline{
+    border: 2px solid white !important;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+/*cambiar de color hacer un hover al boton*/
+.outline:hover {
+    background-color: var(--color-primario);
+    border-color: var(--color-primario) !important;
+    color: black;
+}
+
+/* 2. Contenido de Estructura */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 50px;
+    padding-bottom: 60px;
+}
+
+/* Estilos para el botón de "Salir" cuando estás logueado"*/
+#btn-logout-cliente:hover {
+    background-color: #ff3838 !important; 
+    border-color: #ff3838 !important;     
+    color: white !important;              
+}
+
+/* ===== SLIDER ===== */
+.hero-section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 600px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Slides de fondo */
+.slider-wrapper {
+    position: absolute;
+    inset: 0;
+}
+
+.slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+/* Overlay oscuro sobre el slider */
+.slider-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.55) 0%,
+        rgba(0,0,0,0.35) 50%,
+        rgba(0,0,0,0.7) 100%
+    );
+    z-index: 1;
+}
+
+/* Título centrado encima del slider */
+.hero-text {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.main-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 1.1;
+    text-shadow: 3px 3px 15px rgba(0,0,0,0.8);
+}
+
+.main-title span {
+    color: var(--color-primario);
+}
+
+.subtitle {
+    font-size: 1.4rem;
+    font-style: italic;
+    margin-top: 12px;
+    color: #e0e0e0;
+}
+
+/* Flechas del slider */
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    background: rgba(0, 0, 0, 0.45);
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    color: white;
+    font-size: 1.4rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+}
+
+.slider-arrow:hover {
+    background: var(--color-primario);
+    color: black;
+    border-color: var(--color-primario);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.slider-arrow.left  { left: 25px; }
+.slider-arrow.right { right: 25px; }
+
+/* Puntos indicadores */
+.slider-dots {
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    gap: 10px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+    border: 2px solid rgba(255,255,255,0.6);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot.active {
+    background: var(--color-primario);
+    border-color: var(--color-primario);
+    transform: scale(1.2);
+}
+
+/* Línea neón animada entre slider y contenido */
+.hero-section::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, transparent, var(--color-primario), transparent);
+    background-size: 200% 100%;
+    box-shadow: 0 0 10px var(--color-primario), 0 0 25px #39FF1466;
+    animation: neon-sweep 2.5s linear infinite;
+    z-index: 4;
+}
+
+@keyframes neon-sweep {
+    0%   { background-position: -100% 0; }
+    100% { background-position: 100% 0; }
+}
+
+/* ===== FIN HERO SLIDER ===== */
+
+/* 5. Galería */
+.gallery-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+    gap: 15px;
+}
+
+.gallery-item {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.gallery-item img {
+    width: 100%;
+    aspect-ratio: 1 / 1; 
+    object-fit: cover; 
+    display: block;
+}
+
+/* 6. Quienes somos texto */
+.about-text {
+    text-align: left;
+    line-height: 1.8;
+    font-size: 1.05rem;
+    color: #e0e0e0;
+}
+
+.about-text p {
+    margin-bottom: 15px;
+}
+
+/* 7. Soporte / Contacto Simple */
+.contact-simple {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    text-align: center;
+}
+
+.contact-simple p {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.contact-subtext {
+    font-size: 0.95rem;
+    color: #cccccc;
+    font-weight: normal !important;
+    line-height: 1.5;
+}
+
+.btn-whatsapp {
+    background: #25D366;
+    color: white;
+    text-decoration: none;
+    padding: 15px 35px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-whatsapp:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.6);
+    background: #20ba5a;
+}
+/* estiño para el logo svg */
+.wp-icon {
+    width: 22px;
+    height: 22px;
+    fill: white;
+}
+
+.phone-number {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--color-primario);
+    margin-top: 5px;
+    letter-spacing: 1px;
+}
+
+.location-text {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.map-container {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* --- RESPONSIVE CELULARES --- */
+@media (max-width: 768px) {
+    /* El logo viaja al centro de la escena arriba de todo */
+    .logo-container {
+        position: relative;
+        top: 0;
+        left: 0;
+        text-align: center;
+        padding-top: 20px;
+        margin-bottom: 10px;
+        width: 100%;
+        z-index: 1001;
+    }
+
+    .main-logo {
+        height: 90px; /* Compacto y súper estético para pantallas táctiles */
+        filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.7));
+    }
+
+    /* En celular deja de ser fixed para no robar espacio de lectura al scrollear */
+    .header-top {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding: 10px 15px 25px 15px;
+        position: relative; 
+        top: 0;
+        width: 100%;
+        background: rgba(10, 10, 10, 0.98);
+        border-bottom: 1px solid rgba(57, 255, 20, 0.1);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        z-index: 1000;
+    }
+
+    /* Los enlaces se vuelven bloques estilo "píldoras de vidrio", fáciles de tocar con el dedo */
+    .nav-links {
+        display: flex;
+        flex-wrap: wrap; 
+        justify-content: center;
+        gap: 10px 14px; 
+        width: 100%;
+        white-space: nowrap;
+    }
+
+    .nav-links a {
+        font-size: 0.85rem; 
+        letter-spacing: 0.5px;
+        padding: 6px 12px;
+        background: rgba(255, 255, 255, 0.03); 
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* Los botones se clavan abajo en paralelo ocupando el mismo espacio de forma simétrica */
+    .nav-buttons {
+        position: static; 
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    .nav-buttons .btn-nav {
+        flex: 1; /* Obliga a ambos botones a medir exactamente lo mismo */
+        max-width: 160px; /* Evita que se estiren de más en celulares grandes */
+        font-size: 0.75rem;
+        padding: 10px 0;
+        text-align: center;
+        margin-left: 0 !important; /* Resetea márgenes viejos */
+    }
+
+
+    /* Apagamos el efecto de scroll de JavaScript en celular para que no rompa el flujo */
+    .header-top.scrolled {
+        position: relative;
+        top: 0;
+        padding: 10px 15px 25px 15px;
+    }
+}
+
+/* TABLET */
+@media (max-width: 1250px) and (min-width: 769px) {
+    /* Volvemos al GRID para tener control absoluto de dónde va cada cosa */
+    .header-top {
+        display: grid;
+        grid-template-columns: 1fr 1fr; 
+        grid-template-areas: 
+            "logo botones"
+            "links links"; /* Los enlaces abajo ocupando todo */
+        row-gap: 15px; /* Esta es la separación perfecta entre el piso 1 y el piso 2 */
+        align-items: center;
+        padding: 15px 40px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        background: rgba(10, 10, 10, 0.98);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        z-index: 1000;
+    }
+
+    /* 1er LUGAR: Logo arriba a la izquierda */
+    .logo-container {
+        grid-area: logo;
+        position: static; 
+        justify-self: start; 
+    }
+
+    .main-logo {
+        height: 70px; /* Tamaño pulido */
+        display: block; /* Evita márgenes fantasma abajo de la imagen */
+        filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.7));
+    }
+
+    /* 2do LUGAR: Botones arriba a la derecha */
+    .nav-buttons {
+        grid-area: botones;
+        position: static; 
+        display: flex;
+        gap: 12px;
+        justify-self: end;
+    }
+
+    /* 3er LUGAR: Enlaces abajo con la línea divisoria elegante */
+    .nav-links {
+        grid-area: links;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        padding-top: 15px; /* Espacio interno entre el texto y la línea */
+        border-top: 1px solid rgba(255, 255, 255, 0.1); /* La línea de sub-menú */
+    }
+
+    .nav-links a {
+        font-size: 0.95rem; 
+        letter-spacing: 1px;
+    }
+}
+
+/* BANDA ANIMADA DEBAJO DEL SLIDER */
+.sponsors-band {
+    width: 100%;
+    height: 134px;
+    background: rgba(6, 5, 5, 0.749);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.135);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    margin-top: -50px; /* compensa el gap del main-content */
+    position: relative;
+    z-index: 3;
+    /* ← EFECTO DESVANECIDO EN LAS PUNTAS */
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+}
+
+.sponsors-track {
+    display: flex;
+    gap: 60px;
+    animation: scroll-band 15s linear infinite;
+    white-space: nowrap;
+    width: max-content;
+}
+
+.sponsors-track span {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 4px;
+}
+
+@keyframes scroll-band {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-25%); }
+}
+
+/*Linea de cierre neon*/
+.sponsors-band::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, transparent, var(--color-primario), transparent);
+    background-size: 200% 100%;
+    box-shadow: 0 0 10px var(--color-primario), 0 0 25px #39FF1466;
+    animation: neon-sweep 2.5s linear infinite;
+    z-index: 4;
+}
+
+
+/* Ocultarla en tablet y celular el slider */
+@media (max-width: 1024px) {
+    .sponsors-band {
+        display: none;
+    }
+}
+
+.btn-wsp-flotante {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background-color: #25D366;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+    z-index: 9999;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-wsp-flotante:hover {
+    transform: scale(1.1);
+    background-color: #20ba5a;
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+}
+
+.btn-wsp-flotante svg {
+    width: 35px;
+    height: 35px;
+    fill: white;
+}
+
+
+/* ==========================================================================
+   RESPONSIVE: HERO SLIDER Y PORTADA
+   ========================================================================== */
+@media (max-width: 768px) {
+
+    /* Achicamos la bestialidad del título para que entre en celular */
+    .main-title {
+        font-size: 2.2rem;
+    }
+    
+    .subtitle {
+        font-size: 1.1rem;
+    }
+
+    /* Achicamos el botón de reserva usando su propia variable */
+    .btn-cta-hero {
+        --main-size: 1rem; 
+        padding: 0.5em 1.2em;
+    }
+
+    /* Ajustamos el tamaño y la posición de las flechas del slider */
+    .slider-arrow {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+    .slider-arrow.left  { left: 10px; }
+    .slider-arrow.right { right: 10px; }
+    
+    /* Los cuadritos informativos de Servicios / Ligas necesitan márgenes más ajustados */
+    .section-panel {
+        padding: 20px 15px;
+    }
+    .cards-grid {
+        grid-template-columns: 1fr; /* Todo en 1 columna vertical */
+    }
+}
+
+
+/* ========================================================================== */
+/* 1. DISEÑO CON "CUERPO" PARA BOTONES PÚBLICOS */
+/* ========================================================================== */
+
+/* Botón INGRESAR: Le damos un cuerpo estilo "Vidrio Esmerilado" (Frosted Glass) */
+#nav-modo-publico #btn-ingresar.outline {
+    background: rgba(255, 255, 255, 0.15) !important; /* Un grisáceo translúcido elegante */
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    backdrop-filter: blur(4px); /* Efecto cristal */
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+#nav-modo-publico #btn-ingresar.outline:hover {
+    background: rgba(255, 255, 255, 0.25) !important;
+    border-color: white !important;
+    transform: translateY(-2px);
+}
+
+/* Botón REGISTRARSE: Color sólido para que sea el "Llamado a la Acción" principal */
+#nav-modo-publico #btn-registrar.outline {
+    background: #39FF14 !important; /* Verde sólido */
+    color: black !important;        /* Texto negro para máximo contraste */
+    border: 1px solid #39FF14 !important;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-weight: 900 !important;    /* Letra bien gruesa */
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(57, 255, 20, 0.3);
+    transition: all 0.3s ease;
+}
+
+#nav-modo-publico #btn-registrar.outline:hover {
+    background: #32e612 !important; /* Un tono más oscuro al pasar el mouse */
+    border-color: #32e612 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(57, 255, 20, 0.5);
+}
+
+
+/* ========================================================================== */
+/* 2. ALINEACIÓN FORZADA EN CELULARES (Logo y botones comparten fila) */
+/* ========================================================================== */
+
+@media (max-width: 768px) {
+    /* Limitamos el tamaño del logo para que no empuje a los botones */
+    .logo-container {
+        flex: 0 0 auto !important;
+        max-width: 40% !important; /* Ocupa como máximo el 40% de la pantalla */
+        display: flex;
+        align-items: center;
+    }
+
+    /* Achicamos la imagen del logo un poquito para asegurarnos de que entre */
+    .main-logo {
+        max-width: 100% !important;
+        height: auto !important;
+        object-fit: contain;
+    }
+
+    /* Obligamos a los botones a quedarse pegados a la derecha compartiendo el 60% restante */
+    .nav-buttons {
+        flex: 0 0 auto !important;
+        width: auto !important;
+        max-width: 60% !important; 
+        justify-content: flex-end !important;
+    }
+
+    /* Reducimos sutilmente los botones para que entren los dos al mismo tiempo */
+    #nav-modo-publico .btn-nav, 
+    #nav-modo-cliente .btn-nav {
+        padding: 6px 10px !important;
+        font-size: 0.75rem !important;
+    }
+
+    #nav-modo-publico, #nav-modo-cliente {
+        gap: 6px !important;
+    }
+
+    /* Ocultamos el "Hola, Diego" para ganar espacio de botones vital */
+    #nav-modo-cliente > span {
+        display: none !important; 
+    }
+}
+
