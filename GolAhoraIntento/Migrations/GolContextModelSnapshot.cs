@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace GolAhora.Migrations
+namespace gol_ahora.Migrations
 {
     [DbContext(typeof(GolContext))]
     partial class GolContextModelSnapshot : ModelSnapshot

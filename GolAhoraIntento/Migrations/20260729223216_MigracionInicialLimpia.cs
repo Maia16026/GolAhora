@@ -1,14 +1,13 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using GolAhora;
 
 #nullable disable
 
-namespace GolAhora.Migrations
+namespace gol_ahora.Migrations
 {
     /// <inheritdoc />
-    public partial class MigracionInicial : Migration
+    public partial class MigracionInicialLimpia : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -257,25 +256,6 @@ namespace GolAhora.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Clientes",
-                columns: table => new
-                {
-                    Dni = table.Column<int>(type: "int", nullable: false),
-                    EsSocio = table.Column<bool>(type: "tinyint(1)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Clientes", x => x.Dni);
-                    table.ForeignKey(
-                        name: "FK_Clientes_Usuarios_Dni",
-                        column: x => x.Dni,
-                        principalTable: "Usuarios",
-                        principalColumn: "Dni",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Direcciones",
                 columns: table => new
                 {
@@ -331,6 +311,36 @@ namespace GolAhora.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Jugadores",
+                columns: table => new
+                {
+                    IdJugador = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    IdEquipo = table.Column<int>(type: "int", nullable: false),
+                    DniUsuario = table.Column<int>(type: "int", nullable: true),
+                    NombreInvitado = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DniInvitado = table.Column<int>(type: "int", nullable: true),
+                    Dorsal = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Jugadores", x => x.IdJugador);
+                    table.ForeignKey(
+                        name: "FK_Jugadores_Equipos_IdEquipo",
+                        column: x => x.IdEquipo,
+                        principalTable: "Equipos",
+                        principalColumn: "IdEquipo",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Jugadores_Usuarios_DniUsuario",
+                        column: x => x.DniUsuario,
+                        principalTable: "Usuarios",
+                        principalColumn: "Dni");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "CompeticionEquipo",
                 columns: table => new
                 {
@@ -359,7 +369,8 @@ namespace GolAhora.Migrations
                 name: "Ligas",
                 columns: table => new
                 {
-                    IdActividad = table.Column<int>(type: "int", nullable: false)
+                    IdActividad = table.Column<int>(type: "int", nullable: false),
+                    CupoMaximo = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -377,7 +388,8 @@ namespace GolAhora.Migrations
                 name: "Torneos",
                 columns: table => new
                 {
-                    IdActividad = table.Column<int>(type: "int", nullable: false)
+                    IdActividad = table.Column<int>(type: "int", nullable: false),
+                    CupoMaximo = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -392,40 +404,18 @@ namespace GolAhora.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "ClienteEquipo",
-                columns: table => new
-                {
-                    EquipoIdEquipo = table.Column<int>(type: "int", nullable: false),
-                    JugadoresDni = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ClienteEquipo", x => new { x.EquipoIdEquipo, x.JugadoresDni });
-                    table.ForeignKey(
-                        name: "FK_ClienteEquipo_Clientes_JugadoresDni",
-                        column: x => x.JugadoresDni,
-                        principalTable: "Clientes",
-                        principalColumn: "Dni",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ClienteEquipo_Equipos_EquipoIdEquipo",
-                        column: x => x.EquipoIdEquipo,
-                        principalTable: "Equipos",
-                        principalColumn: "IdEquipo",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Reservas",
                 columns: table => new
                 {
                     IdReserva = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    FechaCreacion = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Fecha = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     HoraInicio = table.Column<TimeSpan>(type: "time(6)", nullable: false),
                     HoraFin = table.Column<TimeSpan>(type: "time(6)", nullable: false),
                     EstadoReserva = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ComprobantePath = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DniCliente = table.Column<int>(type: "int", nullable: false),
                     IdCancha = table.Column<int>(type: "int", nullable: false),
@@ -441,16 +431,16 @@ namespace GolAhora.Migrations
                         principalColumn: "IdCancha",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Reservas_Clientes_DniCliente",
-                        column: x => x.DniCliente,
-                        principalTable: "Clientes",
-                        principalColumn: "Dni",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Reservas_Cobros_IdCobro",
                         column: x => x.IdCobro,
                         principalTable: "Cobros",
                         principalColumn: "IdCobro");
+                    table.ForeignKey(
+                        name: "FK_Reservas_Usuarios_DniCliente",
+                        column: x => x.DniCliente,
+                        principalTable: "Usuarios",
+                        principalColumn: "Dni",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -522,6 +512,10 @@ namespace GolAhora.Migrations
                     IdLiga = table.Column<int>(type: "int", nullable: false),
                     IdEquipo = table.Column<int>(type: "int", nullable: false),
                     Puntos = table.Column<int>(type: "int", nullable: false),
+                    PartidosJugados = table.Column<int>(type: "int", nullable: false),
+                    PartidosGanados = table.Column<int>(type: "int", nullable: false),
+                    PartidosEmpatados = table.Column<int>(type: "int", nullable: false),
+                    PartidosPerdidos = table.Column<int>(type: "int", nullable: false),
                     GolesFavor = table.Column<int>(type: "int", nullable: false),
                     GolesContra = table.Column<int>(type: "int", nullable: false)
                 },
@@ -576,6 +570,10 @@ namespace GolAhora.Migrations
                 {
                     IdActividad = table.Column<int>(type: "int", nullable: false),
                     CupoMaximo = table.Column<int>(type: "int", nullable: false),
+                    Dias = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Horario = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     DniProfesor = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -605,19 +603,21 @@ namespace GolAhora.Migrations
                     IdEquipoLocal = table.Column<int>(type: "int", nullable: false),
                     IdEquipoVisitante = table.Column<int>(type: "int", nullable: false),
                     IdCancha = table.Column<int>(type: "int", nullable: true),
+                    IdCaching = table.Column<int>(type: "int", nullable: true),
                     IdFecha = table.Column<int>(type: "int", nullable: true),
                     IdTorneo = table.Column<int>(type: "int", nullable: true),
-                    GolesLocal = table.Column<int>(type: "int", nullable: false),
-                    GolesVisitante = table.Column<int>(type: "int", nullable: false),
+                    GolesLocal = table.Column<int>(type: "int", nullable: true),
+                    GolesVisitante = table.Column<int>(type: "int", nullable: true),
                     Estado = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Ronda = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Partidos", x => x.IdPartido);
                     table.ForeignKey(
-                        name: "FK_Partidos_Canchas_IdCancha",
-                        column: x => x.IdCancha,
+                        name: "FK_Partidos_Canchas_IdCaching",
+                        column: x => x.IdCaching,
                         principalTable: "Canchas",
                         principalColumn: "IdCancha");
                     table.ForeignKey(
@@ -645,6 +645,37 @@ namespace GolAhora.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "Clientes",
+                columns: table => new
+                {
+                    Dni = table.Column<int>(type: "int", nullable: false),
+                    EsSocio = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    ClaseIdActividad = table.Column<int>(type: "int", nullable: true),
+                    EntrenamientoIdActividad = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Clientes", x => x.Dni);
+                    table.ForeignKey(
+                        name: "FK_Clientes_Clases_ClaseIdActividad",
+                        column: x => x.ClaseIdActividad,
+                        principalTable: "Clases",
+                        principalColumn: "IdActividad");
+                    table.ForeignKey(
+                        name: "FK_Clientes_Entrenamientos_EntrenamientoIdActividad",
+                        column: x => x.EntrenamientoIdActividad,
+                        principalTable: "Entrenamientos",
+                        principalColumn: "IdActividad");
+                    table.ForeignKey(
+                        name: "FK_Clientes_Usuarios_Dni",
+                        column: x => x.Dni,
+                        principalTable: "Usuarios",
+                        principalColumn: "Dni",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Canchas_IdTipoCancha",
                 table: "Canchas",
@@ -656,9 +687,14 @@ namespace GolAhora.Migrations
                 column: "DniProfesor");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClienteEquipo_JugadoresDni",
-                table: "ClienteEquipo",
-                column: "JugadoresDni");
+                name: "IX_Clientes_ClaseIdActividad",
+                table: "Clientes",
+                column: "ClaseIdActividad");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clientes_EntrenamientoIdActividad",
+                table: "Clientes",
+                column: "EntrenamientoIdActividad");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cobros_IdDescuento",
@@ -702,9 +738,19 @@ namespace GolAhora.Migrations
                 column: "IdCertificado");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Partidos_IdCancha",
+                name: "IX_Jugadores_DniUsuario",
+                table: "Jugadores",
+                column: "DniUsuario");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Jugadores_IdEquipo",
+                table: "Jugadores",
+                column: "IdEquipo");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Partidos_IdCaching",
                 table: "Partidos",
-                column: "IdCancha");
+                column: "IdCaching");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Partidos_IdEquipoLocal",
@@ -759,10 +805,7 @@ namespace GolAhora.Migrations
                 name: "Administradores");
 
             migrationBuilder.DropTable(
-                name: "Clases");
-
-            migrationBuilder.DropTable(
-                name: "ClienteEquipo");
+                name: "Clientes");
 
             migrationBuilder.DropTable(
                 name: "CompeticionEquipo");
@@ -771,7 +814,7 @@ namespace GolAhora.Migrations
                 name: "Direcciones");
 
             migrationBuilder.DropTable(
-                name: "Entrenamientos");
+                name: "Jugadores");
 
             migrationBuilder.DropTable(
                 name: "Partidos");
@@ -783,10 +826,10 @@ namespace GolAhora.Migrations
                 name: "Reservas");
 
             migrationBuilder.DropTable(
-                name: "Profesores");
+                name: "Clases");
 
             migrationBuilder.DropTable(
-                name: "Entrenadores");
+                name: "Entrenamientos");
 
             migrationBuilder.DropTable(
                 name: "Fecha");
@@ -801,13 +844,13 @@ namespace GolAhora.Migrations
                 name: "Canchas");
 
             migrationBuilder.DropTable(
-                name: "Clientes");
-
-            migrationBuilder.DropTable(
                 name: "Cobros");
 
             migrationBuilder.DropTable(
-                name: "Instructores");
+                name: "Profesores");
+
+            migrationBuilder.DropTable(
+                name: "Entrenadores");
 
             migrationBuilder.DropTable(
                 name: "Ligas");
@@ -822,13 +865,16 @@ namespace GolAhora.Migrations
                 name: "Recibos");
 
             migrationBuilder.DropTable(
+                name: "Instructores");
+
+            migrationBuilder.DropTable(
+                name: "Competiciones");
+
+            migrationBuilder.DropTable(
                 name: "Certificados");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
-
-            migrationBuilder.DropTable(
-                name: "Competiciones");
 
             migrationBuilder.DropTable(
                 name: "Actividades");

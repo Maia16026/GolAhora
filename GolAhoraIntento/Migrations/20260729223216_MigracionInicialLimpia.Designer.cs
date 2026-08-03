@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace gol_ahora.Migrations
 {
     [DbContext(typeof(GolContext))]
-    [Migration("20260531223420_canchaNullable")]
-    partial class canchaNullable
+    [Migration("20260729223216_MigracionInicialLimpia")]
+    partial class MigracionInicialLimpia
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -147,10 +147,10 @@ namespace gol_ahora.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("GolesLocal")
+                    b.Property<int?>("GolesLocal")
                         .HasColumnType("int");
 
-                    b.Property<int>("GolesVisitante")
+                    b.Property<int?>("GolesVisitante")
                         .HasColumnType("int");
 
                     b.Property<int?>("IdCaching")
@@ -207,6 +207,18 @@ namespace gol_ahora.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("IdLiga")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PartidosEmpatados")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PartidosGanados")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PartidosJugados")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PartidosPerdidos")
                         .HasColumnType("int");
 
                     b.Property<int>("Posicion")
