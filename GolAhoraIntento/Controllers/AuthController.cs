@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using GolAhora.Usuarios;
 using GolAhora.Dtos;
+using BCrypt.Net;
 
 namespace GolAhora.Controllers
 {
@@ -27,33 +28,36 @@ namespace GolAhora.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto login) //Entra un mail y contraseña en LoginDto
         {
-            var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Mail == login.Mail && c.Contrasena == login.Contrasena);
+            // 1. Buscamos PRIMERO en la tabla de Administradores
+            var admin = await _context.Administradores.FirstOrDefaultAsync(a => a.Mail == login.Mail);
 
-            if(cliente != null)
+            if (admin != null && BCrypt.Net.BCrypt.Verify(login.Contrasena, admin.Contrasena))
+            {
+                string token = GenerarToken(admin.Dni.ToString(), "Administrador");
+                return Ok(new
+                {
+                    token = token,
+                    rol = "Administrador",
+                    nombre = admin.Nombre,
+                    apellido = admin.Apellido
+                });
+            }
+            
+            // 2. Si no es admin, recién ahí buscamos en la tabla de Clientes
+            var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Mail == login.Mail);
+
+            if (cliente != null && BCrypt.Net.BCrypt.Verify(login.Contrasena, cliente.Contrasena))
             {
                 string token = GenerarToken(cliente.Dni.ToString(), "Cliente");
                 return Ok(new { 
                     token = token, 
-                    rol = "Cliente", // O el nombre de la variable donde guardes el rol del usuario ("admin"/"profe")
+                    rol = "Cliente", 
                     nombre = cliente.Nombre,
                     apellido = cliente.Apellido
                 });
             }
 
-            var admin = await _context.Administradores.FirstOrDefaultAsync(a => a.Mail == login.Mail && a.Contrasena == login.Contrasena);
-
-            if(admin != null)
-            {
-                string token = GenerarToken(admin.Dni.ToString(), "Administrador");
-                return Ok(new { 
-                    token = token, 
-                    rol = "Administrador", // O el nombre de la variable donde guardes el rol del usuario ("admin"/"profe")
-                    nombre = admin.Nombre,
-                    apellido = admin.Apellido
-                    });
-            }
-
-            return Unauthorized(new{mensaje = "Credenciales incorrectas."});
+            return Unauthorized(new { mensaje = "Credenciales incorrectas." });
         }
 
         private string GenerarToken(string dni, string rol)

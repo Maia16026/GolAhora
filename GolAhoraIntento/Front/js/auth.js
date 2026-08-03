@@ -18,8 +18,7 @@ formLogin.addEventListener('submit', async (e) => {
     btnSubmit.disabled = true;
 
     try {
-        // ⚠️ REEMPLAZÁ ESTA URL POR LA RUTA EXACTA DE TU SWAGGER (ej. puerto 5000, 7123, etc.)
-        const URL_API_LOGIN = 'http://localhost:5000/api/auth/login'; 
+        const URL_API_LOGIN = API_URL+'/auth/login'; 
 
         // 2. Petición asíncrona al backend
         const response = await fetch(URL_API_LOGIN, {
@@ -50,6 +49,7 @@ formLogin.addEventListener('submit', async (e) => {
         // 👇 ESTAS SON LAS LÍNEAS NUEVAS 👇
         localStorage.setItem('rolGolAhora', rolCrudo);
         localStorage.setItem('nombreGolAhora', nombreUsr);
+        localStorage.setItem('dniGolAhora', data.dni || data.Dni || data.DNI);
         
         const rolUsuario = String(rolCrudo).toLowerCase().trim();
 
@@ -112,6 +112,7 @@ document.getElementById('btn-logout-cliente').addEventListener('click', () => {
     localStorage.removeItem('tokenGolAhora');
     localStorage.removeItem('rolGolAhora');    
     localStorage.removeItem('nombreGolAhora');
+    localStorage.removeItem('dniGolAhora');
     
     // Restauramos el menú superior a su estado original
     document.getElementById('nav-modo-cliente').style.display = 'none';
@@ -149,6 +150,7 @@ btnCerrarSesion.addEventListener('click', () => {
     localStorage.removeItem('tokenGolAhora');
     localStorage.removeItem('rolGolAhora');    
     localStorage.removeItem('nombreGolAhora'); 
+    localStorage.removeItem('dniGolAhora');
     panelControl.style.display = 'none';
     sitioPublico.style.display = 'flex';
     menuPegajoso.style.display = '';
@@ -202,8 +204,8 @@ formRegistro.addEventListener('submit', async (e) => {
     btnSubmit.disabled = true;
 
     try {
-        // ⚠️ REEMPLAZÁ ESTA URL POR LA RUTA EXACTA DE TU ENDPOINT DE REGISTRO
-        const URL_API_REGISTRO = 'http://localhost:5000/api/Usuario/registrar'; 
+        
+        const URL_API_REGISTRO = API_URL+'/Usuario/registrar'; 
 
         const response = await fetch(URL_API_REGISTRO, {
             method: 'POST',
