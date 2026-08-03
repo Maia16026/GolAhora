@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using GolAhora.Usuarios;
+using BCrypt.Net;
 
 namespace GolAhora.Controllers
 {
@@ -49,7 +50,7 @@ namespace GolAhora.Controllers
                 Apellido = usuario.Apellido,
                 Telefono = usuario.Telefono,
                 Mail = usuario.Mail,
-                Contrasena = usuario.Contrasena
+                Contrasena = BCrypt.Net.BCrypt.HashPassword(usuario.Contrasena)
             };
 
             Direccion nuevaDireccion = new Direccion

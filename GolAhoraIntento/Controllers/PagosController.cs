@@ -5,11 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using GolAhora.Reservas;
 using GolAhora.Usuarios;
 using GolAhora.Actividades;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GolAhora.Controllers // ¡Cambiamos el namespace para que coincida con la carpeta!
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles="Administrador")]
     public class PagosController : ControllerBase
     {
         private readonly GolContext _context;

@@ -4,11 +4,13 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using GolAhora.Actividades;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GolAhora.Controllers
 {
     [ApiController]
     [Route("api/[controller]")] // URL: api/clases
+    [Authorize(Roles = "Administrador")]
     public class ClasesController : ControllerBase
     {
         private readonly GolContext _context;
@@ -19,6 +21,7 @@ namespace GolAhora.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> ObtenerClases()
         {
             try
@@ -50,9 +53,29 @@ namespace GolAhora.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost("{idClase}/inscribir/{dniCliente}")]
         public async Task<IActionResult> InscribirAlumno(int idClase, int dniCliente)
         {
+            // BLOQUE DE SEGURIDAD (PROTECCIÓN IDOR)
+            // 1. Extraemos el DNI y el Rol del usuario desde las credenciales de su Token
+            var dniTokenClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var rolTokenClaim = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+            
+            if (string.IsNullOrEmpty(dniTokenClaim))
+            {
+                return Unauthorized(new { mensaje = "No se pudo identificar al usuario autenticado." });
+            }
+
+            int dniLogueado = int.Parse(dniTokenClaim);
+
+            // 2. Si el que hace la petición NO es Administrador, 
+            // obligatoriamente el DNI de su token debe coincidir con el dniCliente que mandó en la URL
+            if (rolTokenClaim != "Administrador" && dniLogueado != dniCliente)
+            {
+            // 403 Forbid: El token es válido, pero el usuario no tiene permiso para alterar este recurso ajeno
+            return Forbid(); 
+            }
             var clase = await _context.Clases
                 .Include(c => c.AlumnosInscriptos)
                 .FirstOrDefaultAsync(c => c.IdActividad == idClase);
@@ -104,6 +127,25 @@ namespace GolAhora.Controllers
         [HttpDelete("{idClase}/desinscribir/{dniCliente}")]
         public async Task<IActionResult> DesinscribirAlumno(int idClase, int dniCliente)
         {
+            // BLOQUE DE SEGURIDAD (PROTECCIÓN IDOR)
+            // 1. Extraemos el DNI y el Rol del usuario desde las credenciales de su Token
+            var dniTokenClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var rolTokenClaim = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+            
+            if (string.IsNullOrEmpty(dniTokenClaim))
+            {
+                return Unauthorized(new { mensaje = "No se pudo identificar al usuario autenticado." });
+            }
+
+            int dniLogueado = int.Parse(dniTokenClaim);
+
+            // 2. Si el que hace la petición NO es Administrador, 
+            // obligatoriamente el DNI de su token debe coincidir con el dniCliente que mandó en la URL
+            if (rolTokenClaim != "Administrador" && dniLogueado != dniCliente)
+            {
+            // 403 Forbid: El token es válido, pero el usuario no tiene permiso para alterar este recurso ajeno
+            return Forbid(); 
+            }
             try
             {
                 var clase = await _context.Clases

@@ -4,11 +4,13 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using GolAhora.Reservas;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GolAhora.Controllers
 {
     [ApiController]
     [Route("api/[controller]")] // URL: api/reportes
+    [Authorize(Roles="Administrador")]
     public class ReportesController : ControllerBase
     {
         private readonly GolContext _context;

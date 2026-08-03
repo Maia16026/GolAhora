@@ -7,6 +7,7 @@ using GolAhora.Reservas;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GolAhora.Controllers
 {
@@ -126,6 +127,7 @@ namespace GolAhora.Controllers
         }
 
         [HttpGet("Todas")]
+        [Authorize(Roles="Administrador")]
         public async Task<IActionResult> ObtenerTodasLasReservas()
         {
             try
@@ -162,11 +164,56 @@ namespace GolAhora.Controllers
         [AllowAnonymous] 
         public IActionResult VerComprobante(string nombreArchivo)
         {
-            var ruta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "comprobantes", nombreArchivo);
-            if (!System.IO.File.Exists(ruta)) return NotFound("Comprobante no encontrado.");
+            // DEFENSA EN PROFUNDIDAD (ANTI PATH TRAVERSAL)
+            // ==========================================================================
+            
+            // Capa 1: Sanitizar el input (Chau barras y puntos de navegación)
+            string nombreSeguro = Path.GetFileName(nombreArchivo);
+            
+            if (string.IsNullOrEmpty(nombreSeguro))
+            {
+                return BadRequest(new { mensaje = "Nombre de archivo inválido." });
+            }
 
-            var mimeType = nombreArchivo.EndsWith(".pdf") ? "application/pdf" : "image/jpeg";
-            return PhysicalFile(ruta, mimeType);
+            // Capa 2: Validar rutas absolutas en el servidor
+            string carpetaBase = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "comprobantes"));
+            string rutaFinal = Path.GetFullPath(Path.Combine(carpetaBase, nombreSeguro));
+
+            // Si la ruta final no empieza con la carpeta base, es un intento de ataque
+            if (!rutaFinal.StartsWith(carpetaBase, StringComparison.OrdinalIgnoreCase))
+            {
+                return BadRequest(new { mensaje = "Acceso denegado a la ruta especificada." });
+            }
+
+            // ==========================================================================
+            // PROTECCIÓN IDOR / CONTROL DE ACCESO
+            // ==========================================================================
+            
+            // Verificamos si el archivo existe físicamente en el disco
+            if (!System.IO.File.Exists(rutaFinal)) 
+                return NotFound("Comprobante no encontrado.");
+
+            // Obtenemos los datos del token del usuario logueado
+            var dniClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var rolClaim = User.FindFirst(ClaimTypes.Role)?.Value;
+
+            // Buscamos en tu tabla la reserva asociada usando 'ComprobantePath'
+            var reserva = _context.Reservas.FirstOrDefault(r => r.ComprobantePath == nombreSeguro);
+
+            if (reserva == null)
+            {
+                return NotFound("No se encontró una reserva asociada a este comprobante.");
+            }
+
+            // Si NO es Admin Y TAMPOCO es el dueño de la reserva (DniCliente), lo rebotamos
+            if (rolClaim != "Administrador" && reserva.DniCliente.ToString() != dniClaim)
+            {
+                return Forbid(); // 403 Forbidden automático
+            }
+
+            // Si pasó todos los escudos, entregamos el archivo de forma segura
+            var mimeType = nombreSeguro.EndsWith(".pdf") ? "application/pdf" : "image/jpeg";
+            return PhysicalFile(rutaFinal, mimeType);
         }
 
         [HttpDelete("{id}")]
@@ -177,6 +224,16 @@ namespace GolAhora.Controllers
                 var reserva = await _context.Reservas.FindAsync(id);
                 if (reserva == null) return NotFound(new { mensaje = "Reserva no encontrada." });
                 
+                // ESCUDO DE SEGURIDAD (ANTI-IDOR)
+                var dniClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var rolClaim = User.FindFirst(ClaimTypes.Role)?.Value;
+
+                // Si el usuario NO es Administrador, obligatoriamente su DNI de sesión 
+                // tiene que ser igual al DniCliente que está guardado en la reserva
+                if (rolClaim != "Administrador" && reserva.DniCliente.ToString() != dniClaim)
+                {
+                    return Forbid(); // Devuelve 403 Forbidden automático
+                }
                 _context.Reservas.Remove(reserva);
                 await _context.SaveChangesAsync();
                 
@@ -190,6 +247,7 @@ namespace GolAhora.Controllers
 
         // --- MÉTODO DE CONFIRMACIÓN DE PAGO (ADMIN) ---
         [HttpPut("Confirmar/{id}")]
+        [Authorize(Roles="Administrador")]
         public async Task<IActionResult> ConfirmarReserva(int id)
         {
             try
@@ -235,7 +293,15 @@ namespace GolAhora.Controllers
             {
                 var reserva = await _context.Reservas.FindAsync(id);
                 if (reserva == null) return NotFound(new { mensaje = "Reserva no encontrada." });
+                // ESCUDO DE SEGURIDAD (ANTI-IDOR)
+                var dniClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var rolClaim = User.FindFirst(ClaimTypes.Role)?.Value;
 
+                if (rolClaim != "Administrador" && reserva.DniCliente.ToString() != dniClaim)
+                {
+                    return Forbid(); // Devuelve 403 Forbidden automático
+                }
+                
                 reserva.EstadoReserva = "Cancelada";
 
                 // eliminamos el cobro pendiente

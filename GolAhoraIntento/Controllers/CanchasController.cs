@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using GolAhora.Reservas;
 using GolAhora.Dtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GolAhora.Controllers
 {
     [ApiController]
     [Route("api/[controller]")] // URL: api/canchas
+    [Authorize(Roles = "Administrador")]
     public class CanchasController : ControllerBase
     {
         private readonly GolContext _context;
@@ -20,6 +22,7 @@ namespace GolAhora.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> ObtenerCanchas()
         {
             try
@@ -53,6 +56,7 @@ namespace GolAhora.Controllers
 
         // 2. GET: api/canchas/{id}
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> ObtenerCanchaPorId(int id)
         {
             // Le sacamos el .Include acá también para evitar el bucle infinito

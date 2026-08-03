@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using GolAhora.Usuarios;
 using GolAhora.Dtos;
+using BCrypt.Net;
 
 namespace GolAhora.Controllers
 {

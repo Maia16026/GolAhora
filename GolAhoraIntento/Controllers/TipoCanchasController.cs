@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GolAhora.Reservas;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GolAhora.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles = "Administrador")]
     public class TipoCanchasController : ControllerBase
     {
         private readonly GolContext _context;
@@ -16,6 +18,7 @@ namespace GolAhora.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetTipos()
         {
             var tipos = await _context.Set<TipoCancha>().ToListAsync();

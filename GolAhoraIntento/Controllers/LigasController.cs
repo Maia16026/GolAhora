@@ -5,11 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using GolAhora.Actividades;
 using GolAhora.Dtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GolAhora.Controllers
 {
     [ApiController]
     [Route("api/[controller]")] // URL: api/ligas
+    [Authorize(Roles = "Administrador")]
     public class LigasController : ControllerBase
     {
         private readonly GolContext _context;
@@ -21,13 +23,14 @@ namespace GolAhora.Controllers
 
         // 1. GET: api/ligas
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> ObtenerLigas()
         {
             try
             {
                 var ligas = await _context.Ligas
                     .Include(l => l.Equipos)
-                    .Include(l => l.Fechas) // 👇 LÍNEA CLAVE 👇
+                    .Include(l => l.Fechas) 
                     .ToListAsync();
                 return Ok(ligas);
             }
@@ -116,6 +119,7 @@ namespace GolAhora.Controllers
 
         // 5. GET: api/ligas/{idLiga}/tabla
         [HttpGet("{idLiga}/tabla")]
+        [AllowAnonymous]
         public async Task<IActionResult> ObtenerTablaPosiciones(int idLiga)
         {
             var liga = await _context.Ligas
@@ -132,6 +136,7 @@ namespace GolAhora.Controllers
 
         // 6. GET: api/ligas/{idLiga}/fixture
         [HttpGet("{idLiga}/fixture")]
+        [AllowAnonymous]
         public async Task<IActionResult> ObtenerFixture(int idLiga)
         {
             var liga = await _context.Ligas

@@ -4,11 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GolAhora.Actividades;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GolAhora.Controllers
 {
     [ApiController]
     [Route("api/[controller]")] // URL: api/Equipos
+    [Authorize(Roles = "Administrador")]
     public class EquiposController : ControllerBase
     {
         private readonly GolContext _context;
@@ -21,6 +23,7 @@ namespace GolAhora.Controllers
         // 1. GET: api/Equipos
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> ObtenerEquipos()
         {
             try
@@ -39,6 +42,7 @@ namespace GolAhora.Controllers
 
         // 2. GET: api/Equipos/{id}
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> ObtenerEquipoPorId(int id)
         {
             try
@@ -81,6 +85,7 @@ namespace GolAhora.Controllers
 
         // PUT: api/Equipos/{id}
         [HttpPut("{id}")]
+
         public async Task<IActionResult> ModificarEquipo(int id, [FromBody] Equipo equipoActualizado)
         {
             var equipo = await _context.Equipos.FindAsync(id);
@@ -92,6 +97,7 @@ namespace GolAhora.Controllers
 
         // DELETE: api/Equipos/{id}
         [HttpDelete("{id}")]
+     
         public async Task<IActionResult> EliminarEquipo(int id)
         {
         var equipo = await _context.Equipos.FindAsync(id);
@@ -112,6 +118,7 @@ namespace GolAhora.Controllers
         }
 
         [HttpPost("{idEquipo}/jugadores")]
+      
         public async Task<IActionResult> AgregarJugador(int idEquipo, [FromBody] AgregarJugadorDTO dto)
         {
             var equipo = await _context.Equipos.Include(e => e.Jugadores).FirstOrDefaultAsync(e => e.IdEquipo == idEquipo);
@@ -155,6 +162,7 @@ namespace GolAhora.Controllers
         }
 
         [HttpDelete("{idEquipo}/jugadores/{idJugador}")]
+      
         public async Task<IActionResult> EliminarJugador(int idEquipo, int idJugador)
         {
             var jugador = await _context.Set<Jugador>().FirstOrDefaultAsync(j => j.IdJugador == idJugador && j.IdEquipo == idEquipo);

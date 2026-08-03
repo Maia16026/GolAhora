@@ -6,11 +6,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using GolAhora.Actividades;
 using GolAhora.Dtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GolAhora.Controllers
 {
     [ApiController]
     [Route("api/[controller]")] // URL: api/torneos
+    [Authorize(Roles = "Administrador")]
     public class TorneosController : ControllerBase
     {
         private readonly GolContext _context;
@@ -22,6 +24,7 @@ namespace GolAhora.Controllers
 
         // 1. GET: api/torneos
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> ObtenerTorneos()
         {
             try
