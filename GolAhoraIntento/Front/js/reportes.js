@@ -1,4 +1,4 @@
-const API_REPORTES = 'http://localhost:5000/api/reportes';
+const API_REPORTES = API_URL+'/reportes';
 
 // 1. FUNCIÓN QUE DIBUJA TUS TARJETAS NEÓN
 function renderizarEstructuraReportes() {

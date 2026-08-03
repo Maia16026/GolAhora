@@ -950,7 +950,7 @@ async function cargarTiposDeCanchaEnSelect(idAutoSelect = null) {
     if (!select) return;
 
     try {
-        const response = await fetch('http://localhost:5000/api/TipoCanchas', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }});
+        const response = await fetch(API_URL+ '/TipoCanchas', { headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
         const tipos = await response.json();
         
         select.innerHTML = '<option value="" disabled selected>-- Seleccione un tipo --</option>';
@@ -1014,9 +1014,9 @@ async function guardarNuevoTipoCancha(event) {
     };
 
     try {
-        const response = await fetch('http://localhost:5000/api/TipoCanchas', {
+        const response = await fetch(API_URL+'/TipoCanchas', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` },
             body: JSON.stringify(nuevoTipo)
         });
 
@@ -1045,11 +1045,11 @@ async function guardarNuevaCanchaAdmin(event) {
             Disponible: true
         };
 
-        const response = await fetch('http://localhost:5000/api/Canchas', {
+        const response = await fetch(API_URL+'/Canchas', {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json', 
-                'Authorization': `Bearer ${localStorage.getItem('token')}` 
+                'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` 
             },
             body: JSON.stringify(nuevaCancha)
         });
@@ -1072,8 +1072,8 @@ async function guardarNuevaCanchaAdmin(event) {
 async function cargarCanchasAdmin() {
     const grid = document.getElementById('grid-canchas');
     try {
-        const response = await fetch('http://localhost:5000/api/Canchas', {
-            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        const response = await fetch(API_URL+'/Canchas', {
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }
         });
         
         if (!response.ok) throw new Error("No se pudo cargar las canchas");
@@ -1124,7 +1124,7 @@ async function cargarCanchasAdmin() {
 
 async function editarCancha(id) {
     try {
-        const response = await fetch(`http://localhost:5000/api/Canchas/${id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }});
+        const response = await fetch(API_URL+`/Canchas/${id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
         if (!response.ok) throw new Error();
         const c = await response.json();
 
@@ -1135,7 +1135,7 @@ async function editarCancha(id) {
         if (modalPrevio) modalPrevio.remove();
 
         // 1. Traemos los tipos de cancha para armar el select dinámico
-        const resTipos = await fetch('http://localhost:5000/api/TipoCanchas', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }});
+        const resTipos = await fetch(API_URL+'/TipoCanchas', { headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
         const tipos = await resTipos.json();
         
         let opcionesTipos = '';
@@ -1197,9 +1197,9 @@ async function guardarEdicionCancha(event, id, estadoDisponible) {
     };
 
     try {
-        const response = await fetch(`http://localhost:5000/api/Canchas/${id}`, {
+        const response = await fetch(API_URL+`/Canchas/${id}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` },
             body: JSON.stringify(canchaEditada)
         });
 
@@ -1217,7 +1217,7 @@ async function guardarEdicionCancha(event, id, estadoDisponible) {
 async function eliminarCancha(id) {
     if (!confirm(`¿Estás seguro de que querés eliminar la Cancha N° ${id}?`)) return;
     try {
-        const response = await fetch(`http://localhost:5000/api/Canchas/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
+        const response = await fetch(API_URL+`/Canchas/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
         if (response.ok) { cargarCanchasAdmin(); } 
         else { const data = await response.json(); alert(data.mensaje || 'Error al eliminar.'); }
     } catch (error) { alert('Error de conexión.'); }
@@ -1225,12 +1225,12 @@ async function eliminarCancha(id) {
 
 async function toggleMantenimientoCancha(id) {
     try {
-        const resGet = await fetch(`http://localhost:5000/api/Canchas/${id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
+        const resGet = await fetch(API_URL+`/Canchas/${id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
         const c = await resGet.json();
 
         c.disponible = !c.disponible;
 
-        const resPut = await fetch(`http://localhost:5000/api/Canchas/${id}`, {
+        const resPut = await fetch(API_URL+`/Canchas/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` },
             body: JSON.stringify(c)
@@ -1242,7 +1242,7 @@ async function toggleMantenimientoCancha(id) {
 
 async function imprimirCancha(id) {
     try {
-        const res = await fetch(`http://localhost:5000/api/Canchas/${id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
+        const res = await fetch(API_URL+`/Canchas/${id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
         if (res.ok) {
             const c = await res.json();
             let estado = c.disponible ? "Habilitada y Libre" : "En Mantenimiento";
@@ -1278,7 +1278,7 @@ async function cargarReservasAdmin() {
     const fechaFormatoBackend = `${day}/${month}/${year}`;
 
     try {
-        const response = await fetch('http://localhost:5000/api/Reserva/Todas', {
+        const response = await fetch(API_URL+'/Reserva/Todas', {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }
         });
         
@@ -1379,7 +1379,7 @@ async function cargarReservasAdmin() {
 
                         <div>
                             ${r.estadoReserva === 'En Revisión' ? `
-                                <button class="btn-xs" style="background: rgba(0, 188, 212, 0.1); border-color: rgba(0, 188, 212, 0.3); color: #00bcd4; width: 100%; margin-bottom: 8px;" onclick="window.open('http://localhost:5000/api/Reserva/Comprobante/${r.comprobantePath}', '_blank')">VER COMPROBANTE</button>
+                                <button class="btn-xs" style="background: rgba(0, 188, 212, 0.1); border-color: rgba(0, 188, 212, 0.3); color: #00bcd4; width: 100%; margin-bottom: 8px;" onclick="window.open(API_URL+'/Reserva/Comprobante/${r.comprobantePath}', '_blank')">VER COMPROBANTE</button>
                             ` : ''}
 
                             ${(r.estadoReserva === 'Pendiente' || r.estadoReserva === 'En Revisión') && !turnoYaPaso ? `
@@ -1412,7 +1412,7 @@ async function cargarPagosAdmin() {
     const grid = document.getElementById('grid-pagos');
     if(!grid) return;
     try {
-        const response = await fetch('http://localhost:5000/api/Reserva/Todas', { headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
+        const response = await fetch(API_URL+'/Reserva/Todas', { headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
         const reservas = await response.json();
         const pagos = reservas.filter(r => r.estadoReserva === 'Confirmada');
         
@@ -1436,7 +1436,7 @@ async function cargarPagosAdmin() {
 async function confirmarReservaAdmin(id) {
     if (!confirm(`¿Confirmar pago y habilitar Reserva N° ${id}?`)) return;
     try {
-        const response = await fetch(`http://localhost:5000/api/Reserva/Confirmar/${id}`, { 
+        const response = await fetch(API_URL+`/Reserva/Confirmar/${id}`, { 
             method: 'PUT', headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }
         });
         if (response.ok) { cargarReservasAdmin(); } else { alert('Error al confirmar.'); }
@@ -1446,7 +1446,7 @@ async function confirmarReservaAdmin(id) {
 async function cancelarReservaGlobal(id) {
     if (!confirm(`¿Estás seguro de cancelar la Reserva N° ${id}?`)) return;
     try {
-        const response = await fetch(`http://localhost:5000/api/Reserva/Cancelar/${id}`, {
+        const response = await fetch(API_URL+`/Reserva/Cancelar/${id}`, {
             method: 'PUT', headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }
         });
         if (response.ok) { cargarReservasAdmin(); } else { alert("Error al cancelar."); }
@@ -1468,7 +1468,7 @@ async function cargarCompeticionesAdmin(tipo) {
     if(!grid) return;
     grid.innerHTML = `<p style='color:#ff9800;'>Cargando ${tipo.toLowerCase()}s desde el servidor...</p>`;
     
-    const endpoint = tipo === 'Liga' ? 'http://localhost:5000/api/Ligas' : 'http://localhost:5000/api/Torneos';
+    const endpoint = tipo === 'Liga' ? API_URL+'/Ligas' : API_URL+'/Torneos';
 
     try {
         const response = await fetch(endpoint, { headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
@@ -1599,7 +1599,7 @@ async function guardarCompeticion(event, tipo) {
         }
     };
 
-    const endpoint = tipo === 'Liga' ? 'http://localhost:5000/api/Ligas' : 'http://localhost:5000/api/Torneos';
+    const endpoint = tipo === 'Liga' ? API_URL+'/Ligas' : API_URL+'/Torneos';
 
     try {
         const response = await fetch(endpoint, {
@@ -1673,7 +1673,7 @@ function abrirModalEditarCompeticion(id, nombreActual, cupoActual, tipo, cantEqu
 async function guardarEdicion(id, tipo) {
     const nuevoNombre = document.getElementById('edit-nombre-comp').value;
     const nuevoCupo = document.getElementById('edit-cupo-comp').value;
-    const endpoint = tipo === 'Liga' ? `http://localhost:5000/api/Ligas/${id}` : `http://localhost:5000/api/Torneos/${id}`;
+    const endpoint = tipo === 'Liga' ? API_URL+`/Ligas/${id}` : API_URL+`/Torneos/${id}`;
 
     try {
         const response = await fetch(endpoint, {
@@ -1697,7 +1697,7 @@ async function guardarEdicion(id, tipo) {
 
 async function eliminarCompeticion(idCompeticion, tipo) {
     if (!confirm(`¿Eliminar este/a ${tipo}? Se borrarán equipos y el fixture.`)) return;
-    const endpoint = tipo === 'Liga' ? `http://localhost:5000/api/Ligas/${idCompeticion}` : `http://localhost:5000/api/Torneos/${idCompeticion}`;
+    const endpoint = tipo === 'Liga' ? API_URL+`/Ligas/${idCompeticion}` : API_URL+`/Torneos/${idCompeticion}`;
 
     try {
         const response = await fetch(endpoint, { method: 'DELETE', headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
@@ -1714,7 +1714,7 @@ async function gestionarEquipos(idCompeticion, tipo) {
     let opcionesEquipos = '<option value="" disabled selected>-- Seleccionar equipo --</option>';
     try {
         const token = localStorage.getItem('tokenGolAhora');
-        const resEquipos = await fetch('http://localhost:5000/api/Equipos', { headers: { 'Authorization': `Bearer ${token}` }});
+        const resEquipos = await fetch(API_URL+'/Equipos', { headers: { 'Authorization': `Bearer ${token}` }});
         if(resEquipos.ok) {
             const equipos = await resEquipos.json();
             equipos.forEach(eq => {
@@ -1813,7 +1813,7 @@ async function inscribirEquipoExistente(event, idCompeticion, tipo) {
     const btnSubmit = event.target.querySelector('button[type="submit"]');
     btnSubmit.disabled = true; btnSubmit.innerText = "PROCESANDO...";
 
-    const endpoint = tipo === 'Liga' ? `http://localhost:5000/api/Ligas/${idCompeticion}/inscribir/${idEquipo}` : `http://localhost:5000/api/Torneos/${idCompeticion}/inscribir/${idEquipo}`;
+    const endpoint = tipo === 'Liga' ? API_URL+`/Ligas/${idCompeticion}/inscribir/${idEquipo}` : API_URL+`/Torneos/${idCompeticion}/inscribir/${idEquipo}`;
 
     try {
         const response = await fetch(endpoint, { method: 'POST', headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
@@ -1843,7 +1843,7 @@ async function crearEInscribirEquipo(event, idCompeticion, tipo) {
 
     try {
         // PASO 1: Crear el equipo de forma aislada
-        const resCrear = await fetch('http://localhost:5000/api/Equipos', {
+        const resCrear = await fetch(API_URL+'/Equipos', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` },
             body: JSON.stringify({ Nombre: nombreEquipo })
@@ -1860,7 +1860,7 @@ async function crearEInscribirEquipo(event, idCompeticion, tipo) {
 
         // PASO 2: Inscribirlo instantáneamente
         btnSubmit.innerText = "INSCRIBIENDO...";
-        const endpoint = tipo === 'Liga' ? `http://localhost:5000/api/Ligas/${idCompeticion}/inscribir/${idNuevoEquipo}` : `http://localhost:5000/api/Torneos/${idCompeticion}/inscribir/${idNuevoEquipo}`;
+        const endpoint = tipo === 'Liga' ? API_URL+`/Ligas/${idCompeticion}/inscribir/${idNuevoEquipo}` : API_URL+`/Torneos/${idCompeticion}/inscribir/${idNuevoEquipo}`;
 
         const resInscribir = await fetch(endpoint, { method: 'POST', headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
 
@@ -1880,7 +1880,7 @@ async function crearEInscribirEquipo(event, idCompeticion, tipo) {
 
 async function iniciarCompeticion(idCompeticion, tipo) {
     if (!confirm(`¿Generar fixture para este/a ${tipo}?`)) return;
-    const endpoint = tipo === 'Liga' ? `http://localhost:5000/api/Ligas/${idCompeticion}/iniciar` : `http://localhost:5000/api/Torneos/${idCompeticion}/generar-fixture`;
+    const endpoint = tipo === 'Liga' ? API_URL+`/Ligas/${idCompeticion}/iniciar` : API_URL+`/Torneos/${idCompeticion}/generar-fixture`;
 
     try {
         const response = await fetch(endpoint, { method: 'POST', headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
@@ -1892,7 +1892,7 @@ async function iniciarCompeticion(idCompeticion, tipo) {
 async function verFixture(idCompeticion, tipo) {
     if (tipo !== 'Liga') return alert("Fixture de Torneos disponible pronto.");
     try {
-        const response = await fetch(`http://localhost:5000/api/Ligas/${idCompeticion}/fixture`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
+        const response = await fetch(API_URL+`/Ligas/${idCompeticion}/fixture`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
         if (!response.ok) throw new Error();
         const fechas = await response.json();
         if (fechas.length === 0) return alert("Fixture no generado.");
@@ -1977,7 +1977,7 @@ async function cargarReservasAdmin() {
     }
 
     try {
-        const response = await fetch('http://localhost:5000/api/Reserva/Todas', {
+        const response = await fetch(API_URL+'/Reserva/Todas', {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }
         });
         
@@ -2097,7 +2097,7 @@ async function cargarReservasAdmin() {
 
                         <div>
                             ${r.estadoReserva === 'En Revisión' ? `
-                                <button class="btn-xs" style="background: rgba(0, 188, 212, 0.1); border-color: rgba(0, 188, 212, 0.3); color: #00bcd4; width: 100%; margin-bottom: 8px;" onclick="window.open('http://localhost:5000/api/Reserva/Comprobante/${r.comprobantePath}', '_blank')">VER COMPROBANTE</button>
+                                <button class="btn-xs" style="background: rgba(0, 188, 212, 0.1); border-color: rgba(0, 188, 212, 0.3); color: #00bcd4; width: 100%; margin-bottom: 8px;" onclick="window.open(API_URL+'/Reserva/Comprobante/${r.comprobantePath}', '_blank')">VER COMPROBANTE</button>
                             ` : ''}
 
                             ${(r.estadoReserva === 'Pendiente' || r.estadoReserva === 'En Revisión') && !turnoYaPaso ? `
@@ -2166,7 +2166,7 @@ async function cargarFinanzasAdmin() {
 
     try {
         // Asumimos que creaste el endpoint del PASO 1. Si aún no hay datos, veremos el cartel de vacío.
-        const response = await fetch('http://localhost:5000/api/Pagos/Todos', {
+        const response = await fetch(API_URL+'/Pagos/Todos', {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }
         });
         
@@ -2270,7 +2270,7 @@ async function gestionarRecibo(idCobro, tieneRecibo, monto) {
         if (!confirm(`¿Emitir recibo oficial por $${monto.toLocaleString('es-AR')} para el Cobro #${idCobro}?`)) return;
 
         try {
-            const response = await fetch('http://localhost:5000/api/Pagos/recibos', {
+            const response = await fetch(API_URL+'/Pagos/recibos', {
                 method: 'POST',
                 headers: { 
                     'Authorization': `Bearer ${token}`,
@@ -2293,13 +2293,13 @@ async function gestionarRecibo(idCobro, tieneRecibo, monto) {
         // 2. SI YA TIENE RECIBO: Llamamos al RF-67 para imprimir el ticket
         try {
             // Buscamos los datos completos del cobro (RF-59) para extraer el ID del recibo
-            const resCobro = await fetch(`http://localhost:5000/api/Pagos/${idCobro}`, {
+            const resCobro = await fetch(API_URL+`/Pagos/${idCobro}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const cobro = await resCobro.json();
 
             // Llamamos a imprimir el recibo exacto
-            const resImpresion = await fetch(`http://localhost:5000/api/Pagos/recibos/${cobro.idRecibo}/imprimir`, {
+            const resImpresion = await fetch(API_URL+`/Pagos/recibos/${cobro.idRecibo}/imprimir`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 
@@ -2377,7 +2377,7 @@ async function cargarCompeticionesAdmin(tipo) {
     grid.style.gap = '30px';
 
     grid.innerHTML = `<p style="color: #aaa; text-align: center; grid-column: 1/-1; margin-top: 40px;">⏳ Cargando ${tipo.toLowerCase()}s...</p>`;
-    const endpoint = tipo === 'Liga' ? 'http://localhost:5000/api/Ligas' : 'http://localhost:5000/api/Torneos';
+    const endpoint = tipo === 'Liga' ? API_URL+'/Ligas' : API_URL+'/Torneos';
 
     try {
         const response = await fetch(endpoint, { headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
@@ -2537,7 +2537,7 @@ async function cargarTablaPosiciones(idLiga) {
     cuerpo.innerHTML = '<p style="text-align:center; color:#aaa; margin-top:50px;">⏳ Cargando estadísticas...</p>';
 
     try {
-        const response = await fetch(`http://localhost:5000/api/Ligas/${idLiga}/tabla`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
+        const response = await fetch(API_URL+`/Ligas/${idLiga}/tabla`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
         const posiciones = await response.json();
 
         let trHTML = '';
@@ -2594,7 +2594,7 @@ async function cargarMegaFixture(idLiga) {
     cuerpo.innerHTML = '<p style="text-align:center; color:#aaa; margin-top:50px;">⏳ Cargando cronograma...</p>';
 
     try {
-        const response = await fetch(`http://localhost:5000/api/Ligas/${idLiga}/fixture`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
+        const response = await fetch(API_URL+`/Ligas/${idLiga}/fixture`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
         ligaMemoriaFixtures = await response.json();
         
         // Buscamos la primera fecha que tenga al menos un partido "Pendiente" para abrir ahí directamente
@@ -2699,7 +2699,7 @@ async function guardarGolesPartido(idPartido) {
             GolesVisitante: parseInt(golesVisitaVal)
         };
 
-        const response = await fetch(`http://localhost:5000/api/Ligas/${ligaMemoriaId}/partidos/${idPartido}/resultado`, {
+        const response = await fetch(API_URL+`/Ligas/${ligaMemoriaId}/partidos/${idPartido}/resultado`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` },
             body: JSON.stringify(payload)
@@ -2710,7 +2710,7 @@ async function guardarGolesPartido(idPartido) {
             const msg = await response.json();
             
             // Volvemos a pedir el fixture a C# para actualizar la memoria global
-            const resFixture = await fetch(`http://localhost:5000/api/Ligas/${ligaMemoriaId}/fixture`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
+            const resFixture = await fetch(API_URL+`/Ligas/${ligaMemoriaId}/fixture`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
             ligaMemoriaFixtures = await resFixture.json();
             
             // Dibujamos de nuevo la misma fecha (ahora aparecerá "FINALIZADO")
@@ -2754,7 +2754,7 @@ async function cargarEquiposAdmin() {
     }
 
     try {
-        const response = await fetch('http://localhost:5000/api/Equipos', { headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
+        const response = await fetch(API_URL+'/Equipos', { headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
         if (!response.ok) throw new Error();
         equiposCacheados = await response.json();
 
@@ -2886,7 +2886,7 @@ async function agregarJugadorInline(event, idEquipo) {
     const nombre = document.getElementById(`inline-nombre-${idEquipo}`).value;
 
     try {
-        const response = await fetch(`http://localhost:5000/api/Equipos/${idEquipo}/jugadores`, {
+        const response = await fetch(API_URL+`/Equipos/${idEquipo}/jugadores`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` },
             body: JSON.stringify({ Dni: parseInt(dni), Nombre: nombre })
@@ -2904,7 +2904,7 @@ async function agregarJugadorInline(event, idEquipo) {
 async function eliminarJugadorEquipo(idEquipo, idJugador) {
     if (!confirm("¿Desvincular a este jugador?")) return;
     try {
-        const response = await fetch(`http://localhost:5000/api/Equipos/${idEquipo}/jugadores/${idJugador}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
+        const response = await fetch(API_URL+`/Equipos/${idEquipo}/jugadores/${idJugador}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
         if (response.ok) {
             await cargarEquiposAdmin();
             toggleAcordeonEquipo(idEquipo);
@@ -2915,7 +2915,7 @@ async function eliminarJugadorEquipo(idEquipo, idJugador) {
 async function eliminarEquipoGlobal(id) {
     if(!confirm('¿Eliminar este equipo por completo? Se borrará de todas las competiciones.')) return;
     try {
-        const response = await fetch(`http://localhost:5000/api/Equipos/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
+        const response = await fetch(API_URL+`/Equipos/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` }});
         if (response.ok) { cargarEquiposAdmin(); } else { alert('Error al borrar.'); }
     } catch (error) { alert('Error de red.'); }
 }
@@ -3009,7 +3009,7 @@ async function guardarEquipoCompleto(btnSubmit) {
 
     try {
         // PASO 1: Crear el Equipo Base
-        const resCrear = await fetch('http://localhost:5000/api/Equipos', {
+        const resCrear = await fetch(API_URL+'/Equipos', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` },
             body: JSON.stringify({ Nombre: nombreEquipo })
@@ -3025,7 +3025,7 @@ async function guardarEquipoCompleto(btnSubmit) {
             
             // Disparamos todas las peticiones en paralelo para que sea súper rápido
             const promesasJugadores = plantelTemporal.map(j => {
-                return fetch(`http://localhost:5000/api/Equipos/${idNuevoEquipo}/jugadores`, {
+                return fetch(API_URL+`/Equipos/${idNuevoEquipo}/jugadores`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora')}` },
                     body: JSON.stringify({ Dni: j.dni, Nombre: j.nombre })

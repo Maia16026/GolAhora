@@ -1,14 +1,11 @@
-const API_CLASES_PUBLICO = 'http://localhost:5000/api/clases';
+const API_CLASES_PUBLICO = API_URL+'/clases';
 
 // 1. COMPROBAR SI EL JUGADOR INICIÓ SESIÓN
 function obtenerDniClienteLogueado() {
-    // TRAMPA DE DESARROLLO: Mantiene tu DNI real para pruebas en vivo
-    return "39321254"; 
-
-    let dni = localStorage.getItem('dni') || localStorage.getItem('usuarioDni') || localStorage.getItem('dniUsuario');
+    const dni = localStorage.getItem('dniGolAhora');
     const navCliente = document.getElementById('nav-modo-cliente');
     if (navCliente && navCliente.style.display !== 'none' && navCliente.style.display !== '') {
-        return dni || "39321254"; 
+        return dni || null;
     }
     return null;
 }

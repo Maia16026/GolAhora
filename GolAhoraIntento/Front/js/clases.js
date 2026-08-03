@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api/clases'; 
+const API_URL = API_URL+'/clases'; 
 let listaClases = []; // Variable global para guardar las clases
 
 // 1. OBTENER CLASES

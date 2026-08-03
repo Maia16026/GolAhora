@@ -28,5 +28,7 @@ const formRegistro = document.getElementById('form-registro-sistema');
 const mensajeErrorRegistro = document.getElementById('mensaje-error-registro');
 const btnWsp = document.getElementById('btn-wsp-flotante');
 
-const URL_ADMIN = 'http://localhost:5000/api/admin'; //url de la api/admin
+
+const API_URL = 'http://localhost:5000/api';
+const URL_ADMIN = `${API_URL}/admin`;
 

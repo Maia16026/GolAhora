@@ -22,7 +22,7 @@ let fechaSeleccionada = new Date();
 function intentarAbrirReserva(e) {
     if(e) e.preventDefault(); 
     
-    const token = localStorage.getItem('tokenGolAhora') || localStorage.getItem('token');
+    const token = localStorage.getItem('tokenGolAhora') || localStorage.getItem('tokenGolAhora');
     
     if (!token) {
         const mensajeError = document.getElementById('mensaje-error');
@@ -188,7 +188,7 @@ async function iniciarReservaReal() {
     modal.showModal();
 
     try {
-        const res = await fetch('http://localhost:5000/api/Canchas');
+        const res = await fetch(API_URL+'/Canchas');
         const canchas = await res.json();
         
         // 1. Filtramos para trabajar solo con las disponibles
@@ -260,11 +260,11 @@ async function buscarTurnosReales() {
     cambiarPasoReserva(3);
 
     try {
-        const resCancha = await fetch(`http://localhost:5000/api/Canchas/${reservaActual.idCancha}`);
+        const resCancha = await fetch(API_URL+`/Canchas/${reservaActual.idCancha}`);
         const canchaDB = await resCancha.json();
         
-        const token = localStorage.getItem('tokenGolAhora') || localStorage.getItem('token');
-        const resReservas = await fetch('http://localhost:5000/api/Reserva/Todas', {
+        const token = localStorage.getItem('tokenGolAhora') || localStorage.getItem('tokenGolAhora');
+        const resReservas = await fetch(API_URL+'/Reserva/Todas', {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         const todasLasReservas = await resReservas.json();
@@ -347,8 +347,8 @@ async function confirmarReservaReal(hora) {
     };
 
     try {
-        const token = localStorage.getItem('tokenGolAhora') || localStorage.getItem('token');
-        const response = await fetch('http://localhost:5000/api/Reserva', {
+        const token = localStorage.getItem('tokenGolAhora') || localStorage.getItem('tokenGolAhora');
+        const response = await fetch(API_URL+'/Reserva', {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
@@ -415,8 +415,8 @@ async function abrirMisReservas() {
     }
 
     try {
-        const response = await fetch('http://localhost:5000/api/Reserva/MisReservas', {
-            headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora') || localStorage.getItem('token')}` }
+        const response = await fetch(API_URL+'/Reserva/MisReservas', {
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora') || localStorage.getItem('tokenGolAhora')}` }
         });
 
         if (!response.ok) throw new Error();
@@ -640,8 +640,8 @@ async function generarReservaYPasarAlPago() {
     };
 
     try {
-        const token = localStorage.getItem('tokenGolAhora') || localStorage.getItem('token');
-        const response = await fetch('http://localhost:5000/api/Reserva', {
+        const token = localStorage.getItem('tokenGolAhora') || localStorage.getItem('tokenGolAhora');
+        const response = await fetch(API_URL+'/Reserva', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
             body: JSON.stringify(payload)
@@ -768,9 +768,9 @@ async function enviarComprobantePaso4(idReserva, btnEnvio) {
     formData.append('archivo', fileInput.files[0]);
 
     try {
-        const response = await fetch(`http://localhost:5000/api/Reserva/SubirComprobante/${idReserva}`, {
+        const response = await fetch(API_URL+`/Reserva/SubirComprobante/${idReserva}`, {
             method: 'PUT',
-            headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora') || localStorage.getItem('token')}` }, 
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora') || localStorage.getItem('tokenGolAhora')}` }, 
             body: formData
         });
 
@@ -801,9 +801,9 @@ async function subirComprobanteCliente(idReserva) {
     formData.append('archivo', fileInput.files[0]);
 
     try {
-        const response = await fetch(`http://localhost:5000/api/Reserva/SubirComprobante/${idReserva}`, {
+        const response = await fetch(API_URL+`/Reserva/SubirComprobante/${idReserva}`, {
             method: 'PUT',
-            headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora') || localStorage.getItem('token')}` }, 
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora') || localStorage.getItem('tokenGolAhora')}` }, 
             body: formData
         });
 
@@ -818,9 +818,9 @@ async function subirComprobanteCliente(idReserva) {
 async function cancelarReservaCliente(idReserva) {
     if (!confirm("¿Seguro que querés cancelar esta reserva? (Tené en cuenta la política de 6hs para reembolsos).")) return;
     try {
-        const response = await fetch(`http://localhost:5000/api/Reserva/Cancelar/${idReserva}`, {
+        const response = await fetch(API_URL+`/Reserva/Cancelar/${idReserva}`, {
             method: 'PUT',
-            headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora') || localStorage.getItem('token')}` }
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('tokenGolAhora') || localStorage.getItem('tokenGolAhora')}` }
         });
         const data = await response.json();
         if (response.ok) {
